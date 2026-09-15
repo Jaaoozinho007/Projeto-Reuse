@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUD Avaliações — ReUse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-eco d-none d-lg-block">
+  <div class="container">
+    <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none">
+      <span class="brand-mark"><i class="bi bi-arrow-repeat"></i></span>
+      <span class="brand-name">ReUse</span>
+    </a>
+    <ul class="navbar-nav flex-row gap-1">
+      <li class="nav-item"><a class="nav-link nav-link-eco" href="index.html"><i class="bi bi-box-seam me-1"></i>Itens</a></li>
+      <li class="nav-item"><a class="nav-link nav-link-eco" href="crud-solicitacoes.html"><i class="bi bi-hand-thumbs-up me-1"></i>Solicitações</a></li>
+      <li class="nav-item"><a class="nav-link nav-link-eco active" href="crud-avaliacoes.html"><i class="bi bi-star me-1"></i>Avaliações</a></li>
+      <li class="nav-item"><a class="nav-link nav-link-eco" href="crud-campanhas.html"><i class="bi bi-megaphone me-1"></i>Campanhas</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-eco d-lg-none"><div class="container"><span class="fw-semibold">Avaliações de entrega</span></div></nav>
+
+<div class="container my-4">
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <div class="page-header-icon" style="background:var(--color-accent-light);"><i class="bi bi-star text-accent"></i></div>
+    <div>
+      <h1 class="h4 mb-0">Avaliações de entrega</h1>
+      <p class="text-muted-eco small mb-0">Criar, visualizar, editar e excluir avaliações feitas após a retirada de um item.</p>
+    </div>
+  </div>
+
+  <ul class="nav nav-pills crud-tabs mb-4 gap-2">
+    <li class="nav-item"><button class="nav-link active" style="border-radius:999px;" data-bs-toggle="tab" data-bs-target="#tabListar"><i class="bi bi-list-ul me-1"></i>Listar</button></li>
+    <li class="nav-item"><button class="nav-link" style="border-radius:999px;" data-bs-toggle="tab" data-bs-target="#tabCriar"><i class="bi bi-plus-lg me-1"></i>Criar</button></li>
+    <li class="nav-item"><button class="nav-link" style="border-radius:999px;" data-bs-toggle="tab" data-bs-target="#tabEditar"><i class="bi bi-pencil me-1"></i>Editar</button></li>
+    <li class="nav-item"><button class="nav-link" style="border-radius:999px;" data-bs-toggle="tab" data-bs-target="#tabExcluir"><i class="bi bi-trash me-1"></i>Excluir</button></li>
+  </ul>
+
+  <div class="tab-content">
+
+    <!-- LISTAR -->
+    <div class="tab-pane fade show active" id="tabListar">
+      <div class="table-responsive bg-surface border rounded-4 p-2" style="border-color:var(--color-border) !important;">
+        <table class="table table-eco mb-0">
+          <thead><tr><th>Item</th><th>Avaliador</th><th>Avaliado</th><th>Nota</th><th>Comentário</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Monitor LG 19"</td>
+              <td>Bruna A.</td>
+              <td>David F.</td>
+              <td class="rating"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></td>
+              <td class="small text-muted-eco">Entrega rápida e item como descrito.</td>
+              <td class="d-flex gap-2">
+                <button class="icon-btn" title="Editar"><i class="bi bi-pencil"></i></button>
+                <button class="icon-btn icon-btn-danger" title="Excluir"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>Estante de madeira</td>
+              <td>David F.</td>
+              <td>Ana Souza</td>
+              <td class="rating"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></td>
+              <td class="small text-muted-eco">Combinou tudo certinho pelo chat.</td>
+              <td class="d-flex gap-2">
+                <button class="icon-btn" title="Editar"><i class="bi bi-pencil"></i></button>
+                <button class="icon-btn icon-btn-danger" title="Excluir"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CRIAR -->
+    <div class="tab-pane fade" id="tabCriar">
+      <form class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
+        <div class="mb-3">
+          <label class="form-label-eco">Item entregue</label>
+          <select class="form-select form-select-eco">
+            <option>Monitor LG 19"</option>
+            <option>Estante de madeira</option>
+            <option>Livros de cálculo (5un)</option>
+          </select>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label-eco">Avaliador (quem avalia)</label>
+            <input type="text" class="form-control form-control-eco" placeholder="Ex: Bruna A.">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
+            <input type="text" class="form-control form-control-eco" placeholder="Ex: David F.">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label-eco">Nota</label>
+          <select class="form-select form-select-eco">
+            <option>5 — Excelente</option>
+            <option>4 — Muito bom</option>
+            <option>3 — Bom</option>
+            <option>2 — Regular</option>
+            <option>1 — Ruim</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label-eco">Comentário</label>
+          <textarea class="form-control form-control-eco" rows="3" placeholder="Conte como foi a retirada e o estado do item..."></textarea>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="reset" class="btn-eco-outline flex-fill">Limpar</button>
+          <button type="submit" class="btn-eco flex-fill"><i class="bi bi-check2 me-1"></i> Enviar avaliação</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- EDITAR -->
+    <div class="tab-pane fade" id="tabEditar">
+      <div class="mb-3 empty-select">
+        <label class="form-label-eco"><i class="bi bi-search me-1"></i>Selecione a avaliação</label>
+        <select class="form-select form-select-eco">
+          <option>Monitor LG 19" — Bruna A. → David F.</option>
+          <option>Estante de madeira — David F. → Ana Souza</option>
+        </select>
+      </div>
+      <form class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
+        <div class="mb-3">
+          <label class="form-label-eco">Item entregue</label>
+          <select class="form-select form-select-eco">
+            <option selected>Monitor LG 19"</option>
+            <option>Estante de madeira</option>
+            <option>Livros de cálculo (5un)</option>
+          </select>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label-eco">Avaliador (quem avalia)</label>
+            <input type="text" class="form-control form-control-eco" value="Bruna A.">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
+            <input type="text" class="form-control form-control-eco" value="David F.">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label-eco">Nota</label>
+          <select class="form-select form-select-eco">
+            <option selected>5 — Excelente</option>
+            <option>4 — Muito bom</option>
+            <option>3 — Bom</option>
+            <option>2 — Regular</option>
+            <option>1 — Ruim</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label-eco">Comentário</label>
+          <textarea class="form-control form-control-eco" rows="3">Entrega rápida e item exatamente como descrito. Recomendo!</textarea>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn-eco-outline flex-fill">Cancelar</button>
+          <button type="submit" class="btn-eco flex-fill"><i class="bi bi-check2 me-1"></i> Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- EXCLUIR -->
+    <div class="tab-pane fade" id="tabExcluir">
+      <div class="mb-3 empty-select">
+        <label class="form-label-eco"><i class="bi bi-search me-1"></i>Selecione a avaliação</label>
+        <select class="form-select form-select-eco">
+          <option>Monitor LG 19" — Bruna A. → David F.</option>
+          <option>Estante de madeira — David F. → Ana Souza</option>
+        </select>
+      </div>
+      <div class="confirm-card p-4 d-flex align-items-center gap-3">
+        <span class="avatar-sm" style="background-image:url('https://i.pravatar.cc/80?img=12')"></span>
+        <div class="flex-grow-1">
+          <div class="fw-semibold">Bruna A. avaliou David F.</div>
+          <div class="rating small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+        </div>
+      </div>
+      <p class="confirm-warning small mt-3 mb-3"><i class="bi bi-exclamation-triangle"></i> Essa ação não poderá ser desfeita.</p>
+      <button type="button" class="btn-accent"><i class="bi bi-trash me-1"></i> Excluir avaliação</button>
+    </div>
+
+  </div>
+</div>
+
+<nav class="bottom-nav d-lg-none">
+  <a href="index.html"><i class="bi bi-box-seam"></i>Itens</a>
+  <a href="crud-solicitacoes.html"><i class="bi bi-hand-thumbs-up"></i>Solicitações</a>
+  <a href="crud-avaliacoes.html" class="active"><i class="bi bi-star"></i>Avaliações</a>
+  <a href="crud-campanhas.html"><i class="bi bi-megaphone"></i>Campanhas</a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
