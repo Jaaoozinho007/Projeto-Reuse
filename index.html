@@ -52,11 +52,8 @@
         <table class="table table-eco mb-0">
           <thead><tr><th>Item</th><th>Categoria</th><th>Tipo</th><th>Estado</th><th>Status</th><th></th></tr></thead>
           <tbody>
-            <tr>
-              <td class="d-flex align-items-center gap-2">
-                <span class="avatar-sm" style="background-image:url('https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=200')"></span>
-                Monitor LG 19"
-              </td>
+            <tbody id="tabela-itens-body">
+            </tbody>
               <td>Eletrônicos</td>
               <td>Doação</td>
               <td>Seminovo</td>
@@ -100,24 +97,102 @@
     </div>
 
     <!-- CRIAR -->
-    <div class="tab-pane fade" id="tabCriar">
-      <form class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
+<div class="tab-pane fade" id="tabCriar">
+  <form id="form-criar-item" class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
+    <div class="mb-3">
+      <label class="form-label-eco">Nome do item</label>
+      <input type="text" id="criar-nome" class="form-control form-control-eco" placeholder="Ex: Monitor LG 19 polegadas" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label-eco">Descrição</label>
+      <textarea id="criar-descricao" class="form-control form-control-eco" rows="3" placeholder="Descreva o item, condições de uso e motivo da doação/troca..."></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label-eco">Foto (URL)</label>
+      <input type="text" id="criar-foto" class="form-control form-control-eco" placeholder="https://...">
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label-eco">Categoria</label>
+        <select id="criar-categoria" class="form-select form-select-eco">
+          <option>Eletrônicos</option>
+          <option>Móveis</option>
+          <option>Livros</option>
+          <option>Roupas</option>
+          <option>Utensílios</option>
+          <option>Outros</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-eco">Estado de conservação</label>
+        <select id="criar-estado" class="form-select form-select-eco">
+          <option>Novo</option>
+          <option>Seminovo</option>
+          <option>Usado — bom estado</option>
+          <option>Usado — desgastado</option>
+        </select>
+      </div>
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label-eco">Tipo de negociação</label>
+        <select id="criar-tipo" class="form-select form-select-eco">
+          <option>Doação</option>
+          <option>Troca</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-eco">Local de retirada</label>
+        <select id="criar-local" class="form-select form-select-eco">
+          <option>Bloco A</option>
+          <option>Bloco B</option>
+          <option>Bloco C</option>
+          <option>Biblioteca central</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label-eco">Status</label>
+      <select id="criar-status" class="form-select form-select-eco">
+        <option>Disponível</option>
+        <option>Reservado</option>
+        <option>Concluído</option>
+      </select>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="reset" class="btn-eco-outline flex-fill">Limpar</button>
+      <button type="submit" class="btn-eco flex-fill"><i class="bi bi-check2 me-1"></i> Publicar item</button>
+    </div>
+  </form>
+</div>
+
+    <!-- EDITAR -->
+    <!-- EDITAR -->
+    <div class="tab-pane fade" id="tabEditar">
+      <div class="mb-3 empty-select">
+        <label class="form-label-eco"><i class="bi bi-search me-1"></i>Selecione o item</label>
+        <select id="editar-select-item" class="form-select form-select-eco">
+          <option value="" selected disabled>Selecione...</option>
+        </select>
+      </div>
+      <form id="form-editar-item" class="bg-surface border rounded-4 p-4 d-none" style="border-color:var(--color-border) !important;">
+        <input type="hidden" id="editar-id-item">
         <div class="mb-3">
           <label class="form-label-eco">Nome do item</label>
-          <input type="text" class="form-control form-control-eco" placeholder="Ex: Monitor LG 19 polegadas">
+          <input type="text" id="editar-nome" class="form-control form-control-eco" required>
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Descrição</label>
-          <textarea class="form-control form-control-eco" rows="3" placeholder="Descreva o item, condições de uso e motivo da doação/troca..."></textarea>
+          <textarea id="editar-descricao" class="form-control form-control-eco" rows="3"></textarea>
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Foto (URL)</label>
-          <input type="text" class="form-control form-control-eco" placeholder="https://...">
+          <input type="text" id="editar-foto" class="form-control form-control-eco">
         </div>
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label-eco">Categoria</label>
-            <select class="form-select form-select-eco">
+            <select id="editar-categoria" class="form-select form-select-eco">
               <option>Eletrônicos</option>
               <option>Móveis</option>
               <option>Livros</option>
@@ -128,7 +203,7 @@
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Estado de conservação</label>
-            <select class="form-select form-select-eco">
+            <select id="editar-estado" class="form-select form-select-eco">
               <option>Novo</option>
               <option>Seminovo</option>
               <option>Usado — bom estado</option>
@@ -139,14 +214,14 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label-eco">Tipo de negociação</label>
-            <select class="form-select form-select-eco">
+            <select id="editar-tipo" class="form-select form-select-eco">
               <option>Doação</option>
               <option>Troca</option>
             </select>
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Local de retirada</label>
-            <select class="form-select form-select-eco">
+            <select id="editar-local" class="form-select form-select-eco">
               <option>Bloco A</option>
               <option>Bloco B</option>
               <option>Bloco C</option>
@@ -156,92 +231,14 @@
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Status</label>
-          <select class="form-select form-select-eco">
+          <select id="editar-status" class="form-select form-select-eco">
             <option>Disponível</option>
             <option>Reservado</option>
             <option>Concluído</option>
           </select>
         </div>
         <div class="d-flex gap-2">
-          <button type="reset" class="btn-eco-outline flex-fill">Limpar</button>
-          <button type="submit" class="btn-eco flex-fill"><i class="bi bi-check2 me-1"></i> Publicar item</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- EDITAR -->
-    <div class="tab-pane fade" id="tabEditar">
-      <div class="mb-3 empty-select">
-        <label class="form-label-eco"><i class="bi bi-search me-1"></i>Selecione o item</label>
-        <select class="form-select form-select-eco">
-          <option>Monitor LG 19"</option>
-          <option>Estante de madeira</option>
-          <option>Livros de cálculo (5un)</option>
-        </select>
-      </div>
-      <form class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
-        <div class="mb-3">
-          <label class="form-label-eco">Nome do item</label>
-          <input type="text" class="form-control form-control-eco" value="Monitor LG 19&quot;">
-        </div>
-        <div class="mb-3">
-          <label class="form-label-eco">Descrição</label>
-          <textarea class="form-control form-control-eco" rows="3">Monitor funcionando perfeitamente, sem riscos na tela. Cabo de energia e vídeo incluídos.</textarea>
-        </div>
-        <div class="mb-3">
-          <label class="form-label-eco">Foto (URL)</label>
-          <input type="text" class="form-control form-control-eco" value="https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=400">
-        </div>
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label class="form-label-eco">Categoria</label>
-            <select class="form-select form-select-eco">
-              <option selected>Eletrônicos</option>
-              <option>Móveis</option>
-              <option>Livros</option>
-              <option>Roupas</option>
-              <option>Utensílios</option>
-              <option>Outros</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label-eco">Estado de conservação</label>
-            <select class="form-select form-select-eco">
-              <option>Novo</option>
-              <option selected>Seminovo</option>
-              <option>Usado — bom estado</option>
-              <option>Usado — desgastado</option>
-            </select>
-          </div>
-        </div>
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label class="form-label-eco">Tipo de negociação</label>
-            <select class="form-select form-select-eco">
-              <option selected>Doação</option>
-              <option>Troca</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label-eco">Local de retirada</label>
-            <select class="form-select form-select-eco">
-              <option>Bloco A</option>
-              <option selected>Bloco B</option>
-              <option>Bloco C</option>
-              <option>Biblioteca central</option>
-            </select>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label-eco">Status</label>
-          <select class="form-select form-select-eco">
-            <option selected>Disponível</option>
-            <option>Reservado</option>
-            <option>Concluído</option>
-          </select>
-        </div>
-        <div class="d-flex gap-2">
-          <button type="button" class="btn-eco-outline flex-fill">Cancelar</button>
+          <button type="button" id="editar-cancelar-item" class="btn-eco-outline flex-fill">Cancelar</button>
           <button type="submit" class="btn-eco flex-fill"><i class="bi bi-check2 me-1"></i> Salvar alterações</button>
         </div>
       </form>

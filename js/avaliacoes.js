@@ -1,28 +1,16 @@
-// ============================================================
-// CRUD de Avaliações — armazenamento em localStorage
-// Baseado nos conceitos da Aula 6 da apostila (listar/salvar,
-// setItem/getItem, JSON.stringify/parse) e nas Aulas 4 e 5
-// (arrow functions, spread, FormData, delegação de eventos).
-// ============================================================
-
 const KEY_AVALIACOES = 'app_avaliacoes';
 
-// --- Funções base (padrão da apostila 6.2) ---------------------
-
-// Lê o array completo do localStorage
 function listarAvaliacoes() {
   return JSON.parse(localStorage.getItem(KEY_AVALIACOES) || '[]');
 }
 
-// Persiste o array inteiro no localStorage
 function salvarAvaliacoes(lista) {
   localStorage.setItem(KEY_AVALIACOES, JSON.stringify(lista));
 }
 
-// Dados iniciais (só roda uma vez, se ainda não houver nada salvo)
 function seedAvaliacoes() {
   const existentes = listarAvaliacoes();
-  if (existentes.length > 0) return; // guard clause — não sobrescreve dados já salvos
+  if (existentes.length > 0) return;
 
   const iniciais = [
     {
@@ -46,7 +34,6 @@ function seedAvaliacoes() {
   salvarAvaliacoes(iniciais);
 }
 
-// Converte a n
 function rotuloNota(nota) {
   const rotulos = {
     1: 'Muito ruim',
