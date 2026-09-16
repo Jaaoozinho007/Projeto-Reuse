@@ -46,45 +46,23 @@
 
   <div class="tab-content">
 
-    <!-- LISTAR -->
+    <!-- LISTAR (READ) -->
     <div class="tab-pane fade show active" id="tabListar">
       <div class="table-responsive bg-surface border rounded-4 p-2" style="border-color:var(--color-border) !important;">
         <table class="table table-eco mb-0">
           <thead><tr><th>Item</th><th>Avaliador</th><th>Avaliado</th><th>Nota</th><th>Comentário</th><th></th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Monitor LG 19"</td>
-              <td>Bruna A.</td>
-              <td>David F.</td>
-              <td class="rating"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></td>
-              <td class="small text-muted-eco">Entrega rápida e item como descrito.</td>
-              <td class="d-flex gap-2">
-                <button class="icon-btn" title="Editar"><i class="bi bi-pencil"></i></button>
-                <button class="icon-btn icon-btn-danger" title="Excluir"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>Estante de madeira</td>
-              <td>David F.</td>
-              <td>Ana Souza</td>
-              <td class="rating"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></td>
-              <td class="small text-muted-eco">Combinou tudo certinho pelo chat.</td>
-              <td class="d-flex gap-2">
-                <button class="icon-btn" title="Editar"><i class="bi bi-pencil"></i></button>
-                <button class="icon-btn icon-btn-danger" title="Excluir"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-          </tbody>
+          <!-- As linhas são geradas dinamicamente pelo JS (renderListaAvaliacoes) -->
+          <tbody id="corpoTabela"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- CRIAR -->
+    <!-- CRIAR (CREATE) -->
     <div class="tab-pane fade" id="tabCriar">
-      <form class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
+      <form id="formCriar" class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
         <div class="mb-3">
           <label class="form-label-eco">Item entregue</label>
-          <select class="form-select form-select-eco">
+          <select class="form-select form-select-eco" id="criarItem" name="criarItem">
             <option>Monitor LG 19"</option>
             <option>Estante de madeira</option>
             <option>Livros de cálculo (5un)</option>
@@ -93,26 +71,26 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label-eco">Avaliador (quem avalia)</label>
-            <input type="text" class="form-control form-control-eco" placeholder="Ex: Bruna A.">
+            <input type="text" class="form-control form-control-eco" id="criarAvaliador" name="criarAvaliador" placeholder="Ex: Bruna A.">
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
-            <input type="text" class="form-control form-control-eco" placeholder="Ex: David F.">
+            <input type="text" class="form-control form-control-eco" id="criarAvaliado" name="criarAvaliado" placeholder="Ex: David F.">
           </div>
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Nota</label>
-          <select class="form-select form-select-eco">
-            <option>5 — Excelente</option>
-            <option>4 — Muito bom</option>
-            <option>3 — Bom</option>
-            <option>2 — Regular</option>
-            <option>1 — Ruim</option>
+          <select class="form-select form-select-eco" id="criarNota" name="criarNota">
+            <option value="5">5 — Muito bom</option>
+            <option value="4">4 — Bom</option>
+            <option value="3" selected>3 — Neutro</option>
+            <option value="2">2 — Ruim</option>
+            <option value="1">1 — Muito ruim</option>
           </select>
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Comentário</label>
-          <textarea class="form-control form-control-eco" rows="3" placeholder="Conte como foi a retirada e o estado do item..."></textarea>
+          <textarea class="form-control form-control-eco" id="criarComentario" name="criarComentario" rows="3" placeholder="Conte como foi a retirada e o estado do item..."></textarea>
         </div>
         <div class="d-flex gap-2">
           <button type="reset" class="btn-eco-outline flex-fill">Limpar</button>
@@ -121,20 +99,20 @@
       </form>
     </div>
 
-    <!-- EDITAR -->
+    <!-- EDITAR (UPDATE) -->
     <div class="tab-pane fade" id="tabEditar">
       <div class="mb-3 empty-select">
         <label class="form-label-eco"><i class="bi bi-search me-1"></i>Selecione a avaliação</label>
-        <select class="form-select form-select-eco">
-          <option>Monitor LG 19" — Bruna A. → David F.</option>
-          <option>Estante de madeira — David F. → Ana Souza</option>
+        <select class="form-select form-select-eco" id="selecionarEditar">
+          <option value="" selected disabled>Selecione...</option>
         </select>
       </div>
-      <form class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
+      <form id="formEditar" class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
+        <input type="hidden" id="editarId" name="editarId">
         <div class="mb-3">
           <label class="form-label-eco">Item entregue</label>
-          <select class="form-select form-select-eco">
-            <option selected>Monitor LG 19"</option>
+          <select class="form-select form-select-eco" id="editarItem" name="editarItem">
+            <option>Monitor LG 19"</option>
             <option>Estante de madeira</option>
             <option>Livros de cálculo (5un)</option>
           </select>
@@ -142,52 +120,51 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label-eco">Avaliador (quem avalia)</label>
-            <input type="text" class="form-control form-control-eco" value="Bruna A.">
+            <input type="text" class="form-control form-control-eco" id="editarAvaliador" name="editarAvaliador">
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
-            <input type="text" class="form-control form-control-eco" value="David F.">
+            <input type="text" class="form-control form-control-eco" id="editarAvaliado" name="editarAvaliado">
           </div>
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Nota</label>
-          <select class="form-select form-select-eco">
-            <option selected>5 — Excelente</option>
-            <option>4 — Muito bom</option>
-            <option>3 — Bom</option>
-            <option>2 — Regular</option>
-            <option>1 — Ruim</option>
+          <select class="form-select form-select-eco" id="editarNota" name="editarNota">
+            <option value="5">5 — Muito bom</option>
+            <option value="4">4 — Bom</option>
+            <option value="3">3 — Neutro</option>
+            <option value="2">2 — Ruim</option>
+            <option value="1">1 — Muito ruim</option>
           </select>
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Comentário</label>
-          <textarea class="form-control form-control-eco" rows="3">Entrega rápida e item exatamente como descrito. Recomendo!</textarea>
+          <textarea class="form-control form-control-eco" id="editarComentario" name="editarComentario" rows="3"></textarea>
         </div>
         <div class="d-flex gap-2">
-          <button type="button" class="btn-eco-outline flex-fill">Cancelar</button>
+          <button type="button" id="btnCancelarEdicao" class="btn-eco-outline flex-fill">Cancelar</button>
           <button type="submit" class="btn-eco flex-fill"><i class="bi bi-check2 me-1"></i> Salvar alterações</button>
         </div>
       </form>
     </div>
 
-    <!-- EXCLUIR -->
+    <!-- EXCLUIR (DELETE) -->
     <div class="tab-pane fade" id="tabExcluir">
       <div class="mb-3 empty-select">
         <label class="form-label-eco"><i class="bi bi-search me-1"></i>Selecione a avaliação</label>
-        <select class="form-select form-select-eco">
-          <option>Monitor LG 19" — Bruna A. → David F.</option>
-          <option>Estante de madeira — David F. → Ana Souza</option>
+        <select class="form-select form-select-eco" id="selecionarExcluir">
+          <option value="" selected disabled>Selecione...</option>
         </select>
       </div>
       <div class="confirm-card p-4 d-flex align-items-center gap-3">
-        <span class="avatar-sm" style="background-image:url('https://i.pravatar.cc/80?img=12')"></span>
+        <span class="avatar-sm" id="excluirAvatar" style="background-image:url('https://i.pravatar.cc/80?img=12')"></span>
         <div class="flex-grow-1">
-          <div class="fw-semibold">Bruna A. avaliou David F.</div>
-          <div class="rating small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+          <div class="fw-semibold" id="excluirNomeAvaliacao">—</div>
+          <div class="rating small" id="excluirNota">—</div>
         </div>
       </div>
       <p class="confirm-warning small mt-3 mb-3"><i class="bi bi-exclamation-triangle"></i> Essa ação não poderá ser desfeita.</p>
-      <button type="button" class="btn-accent"><i class="bi bi-trash me-1"></i> Excluir avaliação</button>
+      <button type="button" id="btnConfirmarExclusao" class="btn-accent"><i class="bi bi-trash me-1"></i> Excluir avaliação</button>
     </div>
 
   </div>
@@ -201,5 +178,7 @@
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
+<script src="js/avaliacoes.js"></script>
 </html>

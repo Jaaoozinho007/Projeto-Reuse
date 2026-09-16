@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CRUD Campanhas — ReUse</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" >
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -33,7 +33,7 @@
     <div class="page-header-icon" style="background:var(--color-accent-light);"><i class="bi bi-megaphone text-accent"></i></div>
     <div>
       <h1 class="h4 mb-0">Campanhas de ONG</h1>
-      <p class="text-muted-eco small mb-0">Criar, visualizar, editar e excluir campanhas de arrecadação das instituições parceiras.</p>
+      <p class="text-muted-eco small mb-0">anhas de arrecadação das instituições parceiras.</p>
     </div>
   </div>
 
@@ -47,32 +47,90 @@
   <div class="tab-content">
 
     <!-- LISTAR -->
-    <div class="tab-pane fade show active" id="tabListar">
-      <div class="table-responsive bg-surface border rounded-4 p-2" style="border-color:var(--color-border) !important;">
-        <table class="table table-eco mb-0">
-          <thead><tr><th>Campanha</th><th>ONG</th><th>Categoria</th><th>Meta</th><th>Status</th><th></th></tr></thead>
-          <tbody id="tabela-campanhas-body">
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div class="tab-pane fade show active" id="tabListar">
+  <div class="table-responsive bg-surface border rounded-4 p-2"
+       style="border-color:var(--color-border) !important;">
+
+    <table class="table table-eco mb-0">
+      <thead>
+        <tr>
+          <th>Campanha</th>
+          <th>ONG</th>
+          <th>Categoria</th>
+          <th>Status</th>
+          <th>Descrição</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody id="tabela-campanhas-body">
+        <!-- As campanhas serão inseridas aqui pelo JavaScript -->
+      </tbody>
+    </table>
+
+  </div>
+</div>
 
     <!-- CRIAR -->
-    <div class="tab-pane fade" id="tabCriar">
-      <form id="form-criar" class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
-        <div class="mb-3">
-          <label class="form-label-eco">Título da campanha</label>
-          <input type="text" id="criar-titulo" class="form-control form-control-eco" placeholder="Ex: Agasalhos para o inverno" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label-eco">Descrição</label>
-          <textarea id="descricao" class="form-control form-control-eco" rows="3" placeholder="Descreva a necessidade..."></textarea>
-        </div>
-          <button type="reset" class="btn-eco-outline flex-fill">Limpar</button>
-          <button type="submit" class="btn-eco flex-fill" id = "pub"><i class="bi bi-check2 me-1"></i> Publicar campanha</button>
-        </div>
-      </form>
+<div class="tab-pane fade" id="tabCriar">
+  <form id="form-criar" class="bg-surface border rounded-4 p-4"style="border-color:var(--color-border) !important;">
+
+    <div class="mb-3">
+      <label for="criar-titulo" class="form-label-eco"> Título da campanha</label>
+      <input type="text" id="criar-titulo" class="form-control form-control-eco" placeholder="Ex: Agasalhos para o inverno" required>
     </div>
+
+    <div class="mb-3">
+      <label for="descricao" class="form-label-eco"> Descrição </label>
+
+      <textarea id="descricao" class="form-control form-control-eco" rows="3" placeholder="Descreva a necessidade..."></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="ong" class="form-label-eco"> ONG responsável </label>
+
+      <select id="ong" class="form-select form-control-eco"required>
+        <option value="" selected disabled>Selecione uma ONG</option>
+
+        <option value="Instituto Esperança">Instituto Esperança</option>
+        <option value="Projeto Vida Nova">Projeto Vida Nova</option>
+        <option value="ONG Mãos que Ajudam">ONG Mãos que Ajudam</option>
+        <option value="Instituto Bem Maior"> Instituto Bem Maior</option>
+      </select>
+    </div>
+
+    <div class="mb-3"> 
+      <label for="categoria" class="form-label-eco">Categoria</label>
+      <select id="categoria" class="form-select form-control-eco" required>
+        <option value="" selected disabled>Selecione uma categoria</option>
+        <option value="Educação">Educação</option>
+        <option value="Saúde">Saúde</option>
+        <option value="Meio Ambiente">Meio Ambiente</option>
+        <option value="Animais">Animais</option>
+        <option value="Moradia">Moradia</option>
+        <option value="Assistência Social">Assistência Social</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="status" class="form-label-eco">Status</label>
+      <select id="status" class="form-select form-control-eco" required>
+        <option value="" selected disabled>Selecione o status</option>
+        <option value="Ativo">Ativo</option>
+        <option value="Inativo">Inativo</option>
+      </select>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="reset"class="btn-eco-outline flex-fill">Limpar</button>
+      <button type="submit" class="btn-eco flex-fill" id="pub">
+        <i class="bi bi-check2 me-1"></i>
+        Publicar campanha
+      </button>
+    </div>
+
+  </form>
+</div>
 
     <!-- EDITAR -->
     <div class="tab-pane fade" id="tabEditar">
@@ -95,34 +153,33 @@
         <div class="mb-3">
           <label class="form-label-eco">ONG responsável</label>
           <select id="editar-ong" class="form-select form-select-eco">
-            <option>Casa Abrigo Esperança</option>
-            <option>ONG Reeducar</option>
+            
+        <option value="Instituto Esperança">Instituto Esperança</option>
+        <option value="Projeto Vida Nova">Projeto Vida Nova</option>
+        <option value="ONG Mãos que Ajudam">ONG Mãos que Ajudam</option>
+        <option value="Instituto Bem Maior"> Instituto Bem Maior</option>
+
           </select>
         </div>
         <div class="row g-3 mb-3">
           <div class="col-md-6">
-            <label class="form-label-eco">Categoria necessária</label>
+            <label class="form-label-eco">Categoria</label>
             <select id="editar-categoria" class="form-select form-select-eco">
-              <option>Roupas</option>
-              <option>Material escolar</option>
-              <option>Alimentos não perecíveis</option>
-              <option>Outros</option>
+              <option value="" selected disabled>Selecione uma categoria</option>
+              <option value="Educação">Educação</option>
+              <option value="Saúde">Saúde</option>
+              <option value="Meio Ambiente">Meio Ambiente</option>
+              <option value="Animais">Animais</option>
+              <option value="Moradia">Moradia</option>
+              <option value="Assistência Social">Assistência Social</option>
             </select>
           </div>
-          <div class="col-md-6">
-            <label class="form-label-eco">Meta (unidades)</label>
-            <input type="number" id="editar-meta" class="form-control form-control-eco" min="1" required>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label-eco">Já arrecadado</label>
-          <input type="number" id="editar-arrecadado" class="form-control form-control-eco" min="0">
         </div>
         <div class="mb-3">
           <label class="form-label-eco">Status</label>
           <select id="editar-status" class="form-select form-select-eco">
             <option>Ativa</option>
-            <option>Encerrada</option>
+            <option>Inativa/Encerrada</option>
           </select>
         </div>
         <div class="d-flex gap-2">
@@ -167,6 +224,6 @@
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="campanhas.js"></script>
+<script src="js/campanhas.js"></script>
 </body>
 </html>
