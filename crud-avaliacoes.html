@@ -72,10 +72,12 @@
           <div class="col-md-6">
             <label class="form-label-eco">Avaliador (quem avalia)</label>
             <input type="text" class="form-control form-control-eco" id="criarAvaliador" name="criarAvaliador" placeholder="Ex: Bruna A.">
+            <span id="erro-criarAvaliador" class="msg-erro small" role="alert"></span>
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
             <input type="text" class="form-control form-control-eco" id="criarAvaliado" name="criarAvaliado" placeholder="Ex: David F.">
+            <span id="erro-criarAvaliado" class="msg-erro small" role="alert"></span>
           </div>
         </div>
         <div class="mb-3">
@@ -121,10 +123,12 @@
           <div class="col-md-6">
             <label class="form-label-eco">Avaliador (quem avalia)</label>
             <input type="text" class="form-control form-control-eco" id="editarAvaliador" name="editarAvaliador">
+            <span id="erro-editarAvaliador" class="msg-erro small" role="alert"></span>
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
             <input type="text" class="form-control form-control-eco" id="editarAvaliado" name="editarAvaliado">
+            <span id="erro-editarAvaliado" class="msg-erro small" role="alert"></span>
           </div>
         </div>
         <div class="mb-3">
@@ -155,6 +159,7 @@
         <select class="form-select form-select-eco" id="selecionarExcluir">
           <option value="" selected disabled>Selecione...</option>
         </select>
+        <span id="erro-selecionarExcluir" class="msg-erro small" role="alert"></span>
       </div>
       <div class="confirm-card p-4 d-flex align-items-center gap-3">
         <span class="avatar-sm" id="excluirAvatar" style="background-image:url('https://i.pravatar.cc/80?img=12')"></span>

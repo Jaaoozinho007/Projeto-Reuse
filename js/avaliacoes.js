@@ -50,6 +50,15 @@ function ativarAba(idPainel) {
   if (gatilho) bootstrap.Tab.getOrCreateInstance(gatilho).show();
 }
 
+function mostrarErroCampo(id, msg) {
+  const span = document.getElementById('erro-' + id);
+  if (span) span.textContent = msg;
+}
+
+function limparErroCampo(id) {
+  mostrarErroCampo(id, '');
+}
+
 function renderListaAvaliacoes() {
   const tbody = document.getElementById('corpoTabela');
   const avaliacoes = listarAvaliacoes();
@@ -98,12 +107,21 @@ let idParaExcluir = null;
 formCriar.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const dados = Object.fromEntries(new FormData(formCriar));
+  limparErroCampo('criarAvaliador');
+  limparErroCampo('criarAvaliado');
 
-  if (dados.criarAvaliador.trim() === '' || dados.criarAvaliado.trim() === '') {
-    alert('Preencha avaliador e avaliado.');
-    return;
+  const dados = Object.fromEntries(new FormData(formCriar));
+  let temErro = false;
+
+  if (dados.criarAvaliador.trim() === '') {
+    mostrarErroCampo('criarAvaliador', 'Avaliador obrigatório.');
+    temErro = true;
   }
+  if (dados.criarAvaliado.trim() === '') {
+    mostrarErroCampo('criarAvaliado', 'Avaliado obrigatório.');
+    temErro = true;
+  }
+  if (temErro) return;
 
   const nova = {
     id: Date.now(),
@@ -124,8 +142,7 @@ formCriar.addEventListener('submit', (e) => {
   ativarAba('tabListar');
 });
 
-selecionarEditar.addEventListener('change', () => {
-  const id = Number(selecionarEditar.value);
+function preencherFormEdicao(id) {
   const avaliacao = listarAvaliacoes().find((av) => av.id === id);
   if (!avaliacao) return;
 
@@ -135,22 +152,31 @@ selecionarEditar.addEventListener('change', () => {
   document.getElementById('editarAvaliado').value = avaliacao.avaliado;
   document.getElementById('editarNota').value = avaliacao.nota;
   document.getElementById('editarComentario').value = avaliacao.comentario;
+}
+
+selecionarEditar.addEventListener('change', () => {
+  preencherFormEdicao(Number(selecionarEditar.value));
 });
 
 formEditar.addEventListener('submit', (e) => {
   e.preventDefault();
 
+  limparErroCampo('editarAvaliador');
+  limparErroCampo('editarAvaliado');
+
   const dados = Object.fromEntries(new FormData(formEditar));
   const id = Number(dados.editarId);
+  let temErro = false;
 
-  if (!id) {
-    alert('Selecione uma avaliação para editar.');
-    return;
+  if (dados.editarAvaliador.trim() === '') {
+    mostrarErroCampo('editarAvaliador', 'Avaliador obrigatório.');
+    temErro = true;
   }
-  if (dados.editarAvaliador.trim() === '' || dados.editarAvaliado.trim() === '') {
-    alert('Preencha avaliador e avaliado.');
-    return;
+  if (dados.editarAvaliado.trim() === '') {
+    mostrarErroCampo('editarAvaliado', 'Avaliado obrigatório.');
+    temErro = true;
   }
+  if (temErro) return;
 
   const lista = listarAvaliacoes().map((av) =>
     av.id === id
@@ -179,21 +205,25 @@ btnCancelarEdicao.addEventListener('click', () => {
   ativarAba('tabListar');
 });
 
-selecionarExcluir.addEventListener('change', () => {
-  const id = Number(selecionarExcluir.value);
+function preencherResumoExclusao(id) {
   const avaliacao = listarAvaliacoes().find((av) => av.id === id);
   if (!avaliacao) return;
 
   idParaExcluir = avaliacao.id;
   document.getElementById('excluirNomeAvaliacao').textContent = `${avaliacao.avaliador} avaliou ${avaliacao.avaliado}`;
   document.getElementById('excluirNota').textContent = `Nota ${avaliacao.nota} — ${rotuloNota(avaliacao.nota)}`;
+}
+
+selecionarExcluir.addEventListener('change', () => {
+  preencherResumoExclusao(Number(selecionarExcluir.value));
 });
 
 btnConfirmarExclusao.addEventListener('click', () => {
   if (!idParaExcluir) {
-    alert('Selecione uma avaliação para excluir.');
+    mostrarErroCampo('selecionarExcluir', 'Selecione uma avaliação para excluir.');
     return;
   }
+  limparErroCampo('selecionarExcluir');
 
   const avaliacao = listarAvaliacoes().find((av) => av.id === idParaExcluir);
   if (!avaliacao) return;
@@ -218,13 +248,13 @@ document.getElementById('corpoTabela').addEventListener('click', (e) => {
 
   if (e.target.closest('.btn-editar-linha')) {
     selecionarEditar.value = id;
-    selecionarEditar.dispatchEvent(new Event('change'));
+    preencherFormEdicao(id);
     ativarAba('tabEditar');
   }
 
   if (e.target.closest('.btn-excluir-linha')) {
     selecionarExcluir.value = id;
-    selecionarExcluir.dispatchEvent(new Event('change'));
+    preencherResumoExclusao(id);
     ativarAba('tabExcluir');
   }
 });
