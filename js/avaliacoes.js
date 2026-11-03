@@ -1,48 +1,28 @@
-const KEY_AVALIACOES = 'app_avaliacoes';
+// js/avaliacoes.js — CRUD de Avaliações (Fetch + FormData + PHP/MySQL)
+// Este HTML fica na raiz do projeto, então o caminho é 'php/...'.
+// Se mover o HTML para uma subpasta (ex: home/), troque para '../php/...'.
 
-function listarAvaliacoes() {
-  return JSON.parse(localStorage.getItem(KEY_AVALIACOES) || '[]');
-}
+let listaAvaliacoes = [];   // última lista vinda do banco (só para desenhar a tela)
+let idParaExcluir = null;
 
-function salvarAvaliacoes(lista) {
-  localStorage.setItem(KEY_AVALIACOES, JSON.stringify(lista));
-}
+const formCriar = document.getElementById('formCriar');
+const formEditar = document.getElementById('formEditar');
+const selecionarEditar = document.getElementById('selecionarEditar');
+const selecionarExcluir = document.getElementById('selecionarExcluir');
+const btnCancelarEdicao = document.getElementById('btnCancelarEdicao');
+const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
 
-function seedAvaliacoes() {
-  const existentes = listarAvaliacoes();
-  if (existentes.length > 0) return;
-
-  const iniciais = [
-    {
-      id: Date.now(),
-      item: 'Monitor LG 19"',
-      avaliador: 'Bruna A.',
-      avaliado: 'David F.',
-      nota: 5,
-      comentario: 'Entrega rápida e item como descrito.',
-    },
-    {
-      id: Date.now() + 1,
-      item: 'Estante de madeira',
-      avaliador: 'David F.',
-      avaliado: 'Ana Souza',
-      nota: 4,
-      comentario: 'Combinou tudo certinho pelo chat.',
-    },
-  ];
-
-  salvarAvaliacoes(iniciais);
-}
+/* ---------- utilitários ---------- */
 
 function rotuloNota(nota) {
-  const rotulos = {
-    1: 'Muito ruim',
-    2: 'Ruim',
-    3: 'Neutro',
-    4: 'Bom',
-    5: 'Muito bom',
-  };
+  const rotulos = { 1: 'Muito ruim', 2: 'Ruim', 3: 'Neutro', 4: 'Bom', 5: 'Muito bom' };
   return rotulos[nota] || '';
+}
+
+function esc(texto) {
+  const d = document.createElement('div');
+  d.textContent = texto ?? '';
+  return d.innerHTML;
 }
 
 function ativarAba(idPainel) {
@@ -59,22 +39,51 @@ function limparErroCampo(id) {
   mostrarErroCampo(id, '');
 }
 
+/* ---------- usuários: preencher os <select> de avaliador/avaliado ---------- */
+
+async function carregarUsuarios() {
+  const retorno = await fetch('php/usuario_get.php');
+  const resposta = await retorno.json();
+
+  const placeholder = '<option value="" selected disabled>Selecione...</option>';
+  let opcoes = '';
+
+  if (resposta.status == 'ok') {
+    opcoes = resposta.data.map((u) =>
+      `<option value="${u.id_usuario}">${esc(u.nome)}</option>`
+    ).join('');
+  }
+
+  ['criarAvaliador', 'criarAvaliado', 'editarAvaliador', 'editarAvaliado'].forEach((id) => {
+    document.getElementById(id).innerHTML = placeholder + opcoes;
+  });
+}
+
+/* ---------- READ: listar todos ---------- */
+
+async function buscar() {
+  const retorno = await fetch('php/avaliacao_get.php');
+  const resposta = await retorno.json();
+
+  listaAvaliacoes = resposta.status == 'ok' ? resposta.data : [];
+  renderListaAvaliacoes();
+  popularSelects();
+}
+
 function renderListaAvaliacoes() {
   const tbody = document.getElementById('corpoTabela');
-  const avaliacoes = listarAvaliacoes();
 
-  if (avaliacoes.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted-eco py-4">Nenhuma avaliação cadastrada.</td></tr>';
+  if (listaAvaliacoes.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted-eco py-4">Nenhuma avaliação cadastrada.</td></tr>';
     return;
   }
 
-  tbody.innerHTML = avaliacoes.map((av) => `
-    <tr data-id="${av.id}">
-      <td>${av.item}</td>
-      <td>${av.avaliador}</td>
-      <td>${av.avaliado}</td>
-      <td class="rating"><span class="fw-semibold">${av.nota}</span> <span class="small text-muted-eco">(${rotuloNota(av.nota)})</span></td>
-      <td class="small text-muted-eco">${av.comentario}</td>
+  tbody.innerHTML = listaAvaliacoes.map((av) => `
+    <tr data-id="${av.id_avaliacao}">
+      <td>${esc(av.avaliador)}</td>
+      <td>${esc(av.avaliado)}</td>
+      <td class="rating"><span class="fw-semibold">${av.nota}</span> <span class="small text-muted-eco">(${rotuloNota(Number(av.nota))})</span></td>
+      <td class="small text-muted-eco">${esc(av.comentario)}</td>
       <td class="d-flex gap-2">
         <button type="button" class="icon-btn btn-editar-linha" title="Editar"><i class="bi bi-pencil"></i></button>
         <button type="button" class="icon-btn icon-btn-danger btn-excluir-linha" title="Excluir"><i class="bi bi-trash"></i></button>
@@ -84,120 +93,129 @@ function renderListaAvaliacoes() {
 }
 
 function popularSelects() {
-  const avaliacoes = listarAvaliacoes();
   const placeholder = '<option value="" selected disabled>Selecione...</option>';
-
-  const opcoesHTML = avaliacoes.map((av) =>
-    `<option value="${av.id}">${av.item} — ${av.avaliador} → ${av.avaliado}</option>`
+  const opcoesHTML = listaAvaliacoes.map((av) =>
+    `<option value="${av.id_avaliacao}">#${av.id_avaliacao} — ${esc(av.avaliador)} → ${esc(av.avaliado)}</option>`
   ).join('');
 
   selecionarEditar.innerHTML = placeholder + opcoesHTML;
   selecionarExcluir.innerHTML = placeholder + opcoesHTML;
 }
 
-const formCriar = document.getElementById('formCriar');
-const formEditar = document.getElementById('formEditar');
-const selecionarEditar = document.getElementById('selecionarEditar');
-const selecionarExcluir = document.getElementById('selecionarExcluir');
-const btnCancelarEdicao = document.getElementById('btnCancelarEdicao');
-const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
-
-let idParaExcluir = null;
+/* ---------- CREATE ---------- */
 
 formCriar.addEventListener('submit', (e) => {
   e.preventDefault();
+  novo();
+});
 
+async function novo() {
   limparErroCampo('criarAvaliador');
   limparErroCampo('criarAvaliado');
 
-  const dados = Object.fromEntries(new FormData(formCriar));
+  const avaliador = document.getElementById('criarAvaliador').value;
+  const avaliado = document.getElementById('criarAvaliado').value;
   let temErro = false;
 
-  if (dados.criarAvaliador.trim() === '') {
-    mostrarErroCampo('criarAvaliador', 'Avaliador obrigatório.');
-    temErro = true;
-  }
-  if (dados.criarAvaliado.trim() === '') {
-    mostrarErroCampo('criarAvaliado', 'Avaliado obrigatório.');
+  if (avaliador === '') { mostrarErroCampo('criarAvaliador', 'Avaliador obrigatório.'); temErro = true; }
+  if (avaliado === '') { mostrarErroCampo('criarAvaliado', 'Avaliado obrigatório.'); temErro = true; }
+  if (!temErro && avaliador === avaliado) {
+    mostrarErroCampo('criarAvaliado', 'Avaliador e avaliado devem ser diferentes.');
     temErro = true;
   }
   if (temErro) return;
 
-  const nova = {
-    id: Date.now(),
-    item: dados.criarItem,
-    avaliador: dados.criarAvaliador.trim(),
-    avaliado: dados.criarAvaliado.trim(),
-    nota: Number(dados.criarNota),
-    comentario: dados.criarComentario.trim(),
-  };
+  const fd = new FormData();
+  fd.append('avaliador', avaliador);
+  fd.append('avaliado', avaliado);
+  fd.append('nota', document.getElementById('criarNota').value);
+  fd.append('comentario', document.getElementById('criarComentario').value.trim());
 
-  const lista = listarAvaliacoes();
-  lista.push(nova);
-  salvarAvaliacoes(lista);
+  const retorno = await fetch('php/avaliacao_novo.php', {
+    method: 'POST',
+    body: fd
+  });
+  const resposta = await retorno.json();
 
-  formCriar.reset();
-  renderListaAvaliacoes();
-  popularSelects();
-  ativarAba('tabListar');
-});
+  if (resposta.status == 'ok') {
+    alert('SUCESSO: ' + resposta.mensagem);
+    formCriar.reset();
+    await buscar();
+    ativarAba('tabListar');
+  } else {
+    alert('ERRO: ' + resposta.mensagem);
+  }
+}
 
-function preencherFormEdicao(id) {
-  const avaliacao = listarAvaliacoes().find((av) => av.id === id);
-  if (!avaliacao) return;
+/* ---------- UPDATE (2 fases) ---------- */
 
-  document.getElementById('editarId').value = avaliacao.id;
-  document.getElementById('editarItem').value = avaliacao.item;
-  document.getElementById('editarAvaliador').value = avaliacao.avaliador;
-  document.getElementById('editarAvaliado').value = avaliacao.avaliado;
-  document.getElementById('editarNota').value = avaliacao.nota;
-  document.getElementById('editarComentario').value = avaliacao.comentario;
+// FASE 1: buscar o registro pelo ID e preencher o formulário
+async function preencherFormEdicao(id) {
+  const retorno = await fetch('php/avaliacao_get.php?id=' + id);
+  const resposta = await retorno.json();
+
+  if (resposta.status == 'ok') {
+    const reg = resposta.data[0];
+    document.getElementById('editarId').value = reg.id_avaliacao;
+    document.getElementById('editarAvaliador').value = reg.id_usuario_avaliador;
+    document.getElementById('editarAvaliado').value = reg.id_usuario_avaliado;
+    document.getElementById('editarNota').value = reg.nota;
+    document.getElementById('editarComentario').value = reg.comentario ?? '';
+  } else {
+    alert('ERRO: ' + resposta.mensagem);
+  }
 }
 
 selecionarEditar.addEventListener('change', () => {
-  preencherFormEdicao(Number(selecionarEditar.value));
+  preencherFormEdicao(selecionarEditar.value);
 });
 
+// FASE 2: enviar os dados novos (ID na URL + dados no body)
 formEditar.addEventListener('submit', (e) => {
   e.preventDefault();
+  alterar();
+});
 
+async function alterar() {
   limparErroCampo('editarAvaliador');
   limparErroCampo('editarAvaliado');
 
-  const dados = Object.fromEntries(new FormData(formEditar));
-  const id = Number(dados.editarId);
+  const id = document.getElementById('editarId').value;
+  const avaliador = document.getElementById('editarAvaliador').value;
+  const avaliado = document.getElementById('editarAvaliado').value;
   let temErro = false;
 
-  if (dados.editarAvaliador.trim() === '') {
-    mostrarErroCampo('editarAvaliador', 'Avaliador obrigatório.');
-    temErro = true;
-  }
-  if (dados.editarAvaliado.trim() === '') {
-    mostrarErroCampo('editarAvaliado', 'Avaliado obrigatório.');
+  if (id === '') { alert('Selecione uma avaliação para editar.'); return; }
+  if (avaliador === '') { mostrarErroCampo('editarAvaliador', 'Avaliador obrigatório.'); temErro = true; }
+  if (avaliado === '') { mostrarErroCampo('editarAvaliado', 'Avaliado obrigatório.'); temErro = true; }
+  if (!temErro && avaliador === avaliado) {
+    mostrarErroCampo('editarAvaliado', 'Avaliador e avaliado devem ser diferentes.');
     temErro = true;
   }
   if (temErro) return;
 
-  const lista = listarAvaliacoes().map((av) =>
-    av.id === id
-      ? {
-          ...av,
-          item: dados.editarItem,
-          avaliador: dados.editarAvaliador.trim(),
-          avaliado: dados.editarAvaliado.trim(),
-          nota: Number(dados.editarNota),
-          comentario: dados.editarComentario.trim(),
-        }
-      : av
-  );
+  const fd = new FormData();
+  fd.append('avaliador', avaliador);
+  fd.append('avaliado', avaliado);
+  fd.append('nota', document.getElementById('editarNota').value);
+  fd.append('comentario', document.getElementById('editarComentario').value.trim());
 
-  salvarAvaliacoes(lista);
-  renderListaAvaliacoes();
-  popularSelects();
-  formEditar.reset();
-  selecionarEditar.value = '';
-  ativarAba('tabListar');
-});
+  const retorno = await fetch('php/avaliacao_alterar.php?id=' + id, {
+    method: 'POST',
+    body: fd
+  });
+  const resposta = await retorno.json();
+
+  if (resposta.status == 'ok') {
+    alert('SUCESSO: ' + resposta.mensagem);
+    formEditar.reset();
+    selecionarEditar.value = '';
+    await buscar();
+    ativarAba('tabListar');
+  } else {
+    alert('ERRO: ' + resposta.mensagem);
+  }
+}
 
 btnCancelarEdicao.addEventListener('click', () => {
   formEditar.reset();
@@ -205,46 +223,59 @@ btnCancelarEdicao.addEventListener('click', () => {
   ativarAba('tabListar');
 });
 
+/* ---------- DELETE ---------- */
+
 function preencherResumoExclusao(id) {
-  const avaliacao = listarAvaliacoes().find((av) => av.id === id);
+  const avaliacao = listaAvaliacoes.find((av) => Number(av.id_avaliacao) === Number(id));
   if (!avaliacao) return;
 
-  idParaExcluir = avaliacao.id;
+  idParaExcluir = avaliacao.id_avaliacao;
   document.getElementById('excluirNomeAvaliacao').textContent = `${avaliacao.avaliador} avaliou ${avaliacao.avaliado}`;
-  document.getElementById('excluirNota').textContent = `Nota ${avaliacao.nota} — ${rotuloNota(avaliacao.nota)}`;
+  document.getElementById('excluirNota').textContent = `Nota ${avaliacao.nota} — ${rotuloNota(Number(avaliacao.nota))}`;
 }
 
 selecionarExcluir.addEventListener('change', () => {
-  preencherResumoExclusao(Number(selecionarExcluir.value));
+  preencherResumoExclusao(selecionarExcluir.value);
 });
 
 btnConfirmarExclusao.addEventListener('click', () => {
+  excluir();
+});
+
+async function excluir() {
   if (!idParaExcluir) {
     mostrarErroCampo('selecionarExcluir', 'Selecione uma avaliação para excluir.');
     return;
   }
   limparErroCampo('selecionarExcluir');
 
-  const avaliacao = listarAvaliacoes().find((av) => av.id === idParaExcluir);
+  const avaliacao = listaAvaliacoes.find((av) => Number(av.id_avaliacao) === Number(idParaExcluir));
   if (!avaliacao) return;
 
-  if (confirm(`Excluir a avaliação de ${avaliacao.avaliador} para ${avaliacao.avaliado}?`)) {
-    salvarAvaliacoes(listarAvaliacoes().filter((av) => av.id !== idParaExcluir));
+  if (!confirm(`Excluir a avaliação de ${avaliacao.avaliador} para ${avaliacao.avaliado}?`)) return;
+
+  const retorno = await fetch('php/avaliacao_excluir.php?id=' + idParaExcluir);
+  const resposta = await retorno.json();
+
+  alert(resposta.mensagem);
+
+  if (resposta.status == 'ok') {
     idParaExcluir = null;
     selecionarExcluir.value = '';
     document.getElementById('excluirNomeAvaliacao').textContent = '—';
     document.getElementById('excluirNota').textContent = '—';
-    renderListaAvaliacoes();
-    popularSelects();
+    await buscar();
     ativarAba('tabListar');
   }
-});
+}
+
+/* ---------- atalhos dos botões da tabela ---------- */
 
 document.getElementById('corpoTabela').addEventListener('click', (e) => {
   const linha = e.target.closest('tr[data-id]');
   if (!linha) return;
 
-  const id = Number(linha.dataset.id);
+  const id = linha.dataset.id;
 
   if (e.target.closest('.btn-editar-linha')) {
     selecionarEditar.value = id;
@@ -259,8 +290,10 @@ document.getElementById('corpoTabela').addEventListener('click', (e) => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  seedAvaliacoes();
-  renderListaAvaliacoes();
-  popularSelects();
+/* ---------- início ---------- */
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // valida_sessao(); // 
+  await carregarUsuarios();   // primeiro os usuários (selects), depois as avaliações
+  buscar();
 });

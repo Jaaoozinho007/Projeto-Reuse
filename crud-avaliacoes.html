@@ -50,7 +50,7 @@
     <div class="tab-pane fade show active" id="tabListar">
       <div class="table-responsive bg-surface border rounded-4 p-2" style="border-color:var(--color-border) !important;">
         <table class="table table-eco mb-0">
-          <thead><tr><th>Item</th><th>Avaliador</th><th>Avaliado</th><th>Nota</th><th>Comentário</th><th></th></tr></thead>
+          <thead><tr><th>Avaliador</th><th>Avaliado</th><th>Nota</th><th>Comentário</th><th></th></tr></thead>
           <!-- As linhas são geradas dinamicamente pelo JS (renderListaAvaliacoes) -->
           <tbody id="corpoTabela"></tbody>
         </table>
@@ -60,23 +60,15 @@
     <!-- CRIAR (CREATE) -->
     <div class="tab-pane fade" id="tabCriar">
       <form id="formCriar" class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
-        <div class="mb-3">
-          <label class="form-label-eco">Item entregue</label>
-          <select class="form-select form-select-eco" id="criarItem" name="criarItem">
-            <option>Monitor LG 19"</option>
-            <option>Estante de madeira</option>
-            <option>Livros de cálculo (5un)</option>
-          </select>
-        </div>
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label-eco">Avaliador (quem avalia)</label>
-            <input type="text" class="form-control form-control-eco" id="criarAvaliador" name="criarAvaliador" placeholder="Ex: Bruna A.">
+            <select class="form-select form-select-eco" id="criarAvaliador" name="criarAvaliador"><option value="" selected disabled>Selecione...</option></select>
             <span id="erro-criarAvaliador" class="msg-erro small" role="alert"></span>
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
-            <input type="text" class="form-control form-control-eco" id="criarAvaliado" name="criarAvaliado" placeholder="Ex: David F.">
+            <select class="form-select form-select-eco" id="criarAvaliado" name="criarAvaliado"><option value="" selected disabled>Selecione...</option></select>
             <span id="erro-criarAvaliado" class="msg-erro small" role="alert"></span>
           </div>
         </div>
@@ -111,23 +103,15 @@
       </div>
       <form id="formEditar" class="bg-surface border rounded-4 p-4" style="border-color:var(--color-border) !important;">
         <input type="hidden" id="editarId" name="editarId">
-        <div class="mb-3">
-          <label class="form-label-eco">Item entregue</label>
-          <select class="form-select form-select-eco" id="editarItem" name="editarItem">
-            <option>Monitor LG 19"</option>
-            <option>Estante de madeira</option>
-            <option>Livros de cálculo (5un)</option>
-          </select>
-        </div>
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label-eco">Avaliador (quem avalia)</label>
-            <input type="text" class="form-control form-control-eco" id="editarAvaliador" name="editarAvaliador">
+            <select class="form-select form-select-eco" id="editarAvaliador" name="editarAvaliador"><option value="" selected disabled>Selecione...</option></select>
             <span id="erro-editarAvaliador" class="msg-erro small" role="alert"></span>
           </div>
           <div class="col-md-6">
             <label class="form-label-eco">Avaliado (quem recebe a nota)</label>
-            <input type="text" class="form-control form-control-eco" id="editarAvaliado" name="editarAvaliado">
+            <select class="form-select form-select-eco" id="editarAvaliado" name="editarAvaliado"><option value="" selected disabled>Selecione...</option></select>
             <span id="erro-editarAvaliado" class="msg-erro small" role="alert"></span>
           </div>
         </div>
