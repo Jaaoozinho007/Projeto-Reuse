@@ -1,7 +1,5 @@
 create database if not exists ReUse;
-
 use ReUse;
-
 create table administrador(
 	id_administrador INT Primary Key auto_increment,
     nome VARCHAR(50) NOT NULL,
@@ -134,9 +132,6 @@ foreign key (id_item) references item (id_item),
 foreign key (id_solicitacao) references solicitacao (id_solicitacao)
 );
 
-
-
-
 INSERT INTO usuario (
     id_usuario,
     nome,
@@ -153,4 +148,13 @@ INSERT INTO usuario (
 (4, 'Diego Costa', 'diegolindao@gmail.com', 'DiegoogeiD123', 48999209743, 'Pinhais', NULL, '2026-01-18'),
 (5, 'Mariana Souza', 'marianasouza_m@gmail.com', 'MariS25', 48999209744, 'Curitiba', NULL, '2026-01-20');
 
+insert into administrador values
 
+(2, 'Andre', 'andresilvaadm@gmail.com', 'adm01', '2026-01-01'),
+(3, 'Mathias', 'mathiasadmoficial@gmail.com', 'adm02', '2026-01-01');
+
+
+insert into instituicao values 
+(1, 'Instituto Boa esperança', 'boaesperanca@outlook.com', 'espera123', 41999982391, 'Curitiba-PR', 'instituicao.png', True, '2026-05-05', 2),
+(2, 'Instituto nova vida', 'novavida@outlook.com', 'vida123', 41992394912, 'Fazenda Rio Grande-PR', 'boavida.png', True, '2026-07-06', 3),
+(3, 'Instituto criança feliz', 'criancafeliz@outlook.com', 'cria123', 41982391024, 'Curitiba-PR', 'criancafeliz.png', True, '2026-08-01', 1);
