@@ -3,7 +3,7 @@ create database if not exists ReUse;
 use ReUse;
 
 create table administrador(
-	id_administrador INT Primary Key,
+	id_administrador INT Primary Key auto_increment,
     nome VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
     senha VARCHAR(12) NOT NULL,
@@ -11,13 +11,13 @@ create table administrador(
 );
 
 create table categoria(
-	id_categoria INT Primary Key,
+	id_categoria INT Primary Key auto_increment,
     nome varchar(30) NOT NULL,
     icone text
 );
 
 create table usuario(
-	id_usuario int primary key NOT NULL,
+	id_usuario int primary key NOT NULL auto_increment,
     nome varchar(50) NOT NULL,
     email varchar(50) NOT NULL,
     senha varchar(12) NOT NULL,
@@ -28,7 +28,7 @@ create table usuario(
 );
 
 create table notificacao(
-	id_notificacao int primary key,
+	id_notificacao int primary key auto_increment,
     status_leitura boolean NOT NULL,
     tipo_notificacao varchar(60) NOT NULL,
     conteudo_notificacao varchar(150) NOT NULL,
@@ -38,7 +38,7 @@ create table notificacao(
 );
 
 create table instituicao (
-id_instituicao int primary key,
+id_instituicao int primary key auto_increment,
 nome varchar (50) not null,
 email varchar (50) not null,
 senha varchar (12) not null,
@@ -52,7 +52,7 @@ constraint fk_adm foreign key (id_administrador_avaliador) references administra
 );
 
 create table campanha (
-id_campanha int primary key,
+id_campanha int primary key auto_increment,
 titulo varchar (20) not null,
 descricao varchar (50) not null,
 meta int,
@@ -64,7 +64,7 @@ constraint fk_inst foreign key (id_instituicao_publicante) references instituica
 );
 
 create table denuncia(
-id_denuncia int primary key,
+id_denuncia int primary key auto_increment,
 tipo_alvo varchar (20) not null,
 status_denuncia varchar(20) not null,
 motivo_denuncia varchar(50) not null,
@@ -76,7 +76,7 @@ constraint fk_admin foreign key (id_administrador) references administrador(id_a
 );
 
 create table avaliacao (
-id_avaliacao int primary key,
+id_avaliacao int primary key auto_increment,
 nota int not null,
 comentario varchar (300),
 data_avaliacao date not null,
@@ -87,7 +87,7 @@ constraint fk_ava_02 foreign key (id_usuario_avaliado) references usuario(id_usu
 );
 
 create table solicitacao(
-id_solicitacao int primary key,
+id_solicitacao int primary key auto_increment,
 mensagem varchar (300),
 local_retirada_sugerido varchar (50),
 status_soli varchar (24) not null,
@@ -97,7 +97,7 @@ constraint fk_soli foreign key (id_usuario_solicitante) references usuario(id_us
 );
 
 create table mensagem(
-id_mensagem int primary key,
+id_mensagem int primary key auto_increment,
 conteudo varchar (300) not null,
 anexo text,
 data_hora date,
@@ -109,7 +109,7 @@ constraint fk_msg2 foreign key (id_solicitacao) references solicitacao(id_solici
 );
 
 create table item(
-id_item int primary key,
+id_item int primary key auto_increment,
 nome varchar (50) not null,
 descricao varchar (300) not null,
 estado_conservacao varchar (30) not null,
@@ -153,35 +153,4 @@ INSERT INTO usuario (
 (4, 'Diego Costa', 'diegolindao@gmail.com', 'DiegoogeiD123', 48999209743, 'Pinhais', NULL, '2026-01-18'),
 (5, 'Mariana Souza', 'marianasouza_m@gmail.com', 'MariS25', 48999209744, 'Curitiba', NULL, '2026-01-20');
 
-
--- A parte do insert das avs
-
-
-
-INSERT INTO avaliacao (
-    id_avaliacao,
-    nota,
-    comentario,
-    data_avaliacao,
-    id_usuario_avaliador,
-    id_usuario_avaliado
-) VALUES
-(1, 5, 'Excelente experiência', '2026-02-01', 1, 2),
-(2, 4, 'Pessoa muito atenciosa.', '2026-02-02', 2, 3),
-(3, 5, 'A troca ocorreu de boas.', '2026-02-03', 3, 1),
-(4, 3, 'A experiência foi boa.', '2026-02-04', 4, 2),
-(5, 4, 'Tudo ocorreu conforme combinado.', '2026-02-05', 5, 4),
-(6, 5, 'Manja muito.', '2026-02-06', 1, 5),
-(7, 2, 'PILANTRA.', '2026-02-07', 2, 4);
-
-
-
-
--- update das avs
-
-
-UPDATE avaliacao
-SET nota = 4,
-    comentario = 'Razoável'
-WHERE id_avaliacao = 7;
 
