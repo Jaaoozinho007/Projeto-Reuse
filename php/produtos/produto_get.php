@@ -9,11 +9,12 @@
         'data'      => []
     ];
 
-    if(isset($_GET['id'])){
+    if (isset($_GET['id'])){
         // Segunda situação - RECEBENDO O ID por GET (usado para editar)
         $stmt = $conexao->prepare("SELECT id_item, nome, descricao, estado_conservacao, tipo_negociacao, fotos, localizacao, localizacao_visivel, status_item, data_publicacao, id_usuario_publicador, id_categoria_item FROM item WHERE id_item = ?");
         $stmt->bind_param("i",$_GET['id']);
-    }else{
+    }
+    else {
         // Primeira situação - SEM RECEBER O ID por GET (usado na lista)
         $stmt = $conexao->prepare("SELECT id_item, nome, estado_conservacao, tipo_negociacao, localizacao, status_item, data_publicacao FROM item");
     }
@@ -26,8 +27,8 @@
     // do banco de Dados
     $tabela = [];
 
-    if($resultado->num_rows > 0){
-        while($linha = $resultado->fetch_assoc()){
+    if ($resultado->num_rows > 0){
+        while ($linha = $resultado->fetch_assoc()){
             $tabela[] = $linha;
         }
         $retorno = [
@@ -35,7 +36,8 @@
             'mensagem'  => 'Sucesso, consulta efetuada.',
             'data'      => $tabela
         ];
-    }else{
+    }
+    else {
         $retorno = [
             'status'    => 'nok',
             'mensagem'  => 'Não há registros',

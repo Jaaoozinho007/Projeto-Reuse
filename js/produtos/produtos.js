@@ -200,7 +200,7 @@ function limparFormulario(){
         document.getElementById(campos[i]).value = "";
     }
     var selects = ["estado", "tipo", "status", "visivel", "categoria", "usuario"];
-    for(var i=0;i<selects.length;i++){
+    for (var i=0;i<selects.length;i++){
         document.getElementById(selects[i]).selectedIndex = 0;
     }
 }

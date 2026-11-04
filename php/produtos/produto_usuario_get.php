@@ -14,8 +14,8 @@
 
     $tabela = [];
 
-    if($resultado->num_rows > 0){
-        while($linha = $resultado->fetch_assoc()){
+    if ($resultado->num_rows > 0){
+        while ($linha = $resultado->fetch_assoc()){
             $tabela[] = $linha;
         }
         $retorno = [
@@ -23,7 +23,8 @@
             'mensagem'  => 'Sucesso, consulta efetuada.',
             'data'      => $tabela
         ];
-    }else{
+    }
+    else {
         $retorno = [
             'status'    => 'nok',
             'mensagem'  => 'Não há usuários cadastrados',
