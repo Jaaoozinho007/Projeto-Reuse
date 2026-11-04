@@ -8,13 +8,14 @@
     ];
 
     // Validação: campos que não podem chegar vazios
-    if(empty($_POST['nome']) || empty($_POST['data']) || empty($_POST['categoria']) || empty($_POST['usuario'])){
+    if (empty($_POST['nome']) || empty($_POST['data']) || empty($_POST['categoria']) || empty($_POST['usuario'])){
         $retorno = [
             'status'    => 'nok',
             'mensagem'  => 'Preencha nome, data, categoria e publicador.',
             'data'      => []
         ];
-    }else{
+    }
+    else {
         // Informações que vêm do front (FormData -> $_POST)
         $nome       = $_POST['nome'];
         $descricao  = $_POST['descricao'];
@@ -35,13 +36,14 @@
         $stmt->bind_param("ssssssissii", $nome, $descricao, $estado, $tipo, $fotos, $local, $visivel, $status, $data, $usuario, $categoria);
         $stmt->execute();
 
-        if($stmt->affected_rows > 0){
+        if ($stmt->affected_rows > 0){
             $retorno = [
                 'status'    => 'ok',
                 'mensagem'  => 'Registro inserido com sucesso',
                 'data'      => []
             ];
-        }else{
+        }
+        else {
             $retorno = [
                 'status'    => 'nok',
                 'mensagem'  => 'Falha ao inserir o registro',
