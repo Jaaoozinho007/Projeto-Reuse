@@ -1,8 +1,4 @@
-// js/avaliacoes.js — CRUD de Avaliações (Fetch + FormData + PHP/MySQL)
-// Este HTML fica na raiz do projeto, então o caminho é 'php/...'.
-// Se mover o HTML para uma subpasta (ex: home/), troque para '../php/...'.
-
-let listaAvaliacoes = [];   // última lista vinda do banco (só para desenhar a tela)
+let listaAvaliacoes = [];
 let idParaExcluir = null;
 
 const formCriar = document.getElementById('formCriar');
@@ -12,7 +8,6 @@ const selecionarExcluir = document.getElementById('selecionarExcluir');
 const btnCancelarEdicao = document.getElementById('btnCancelarEdicao');
 const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
 
-/* ---------- utilitários ---------- */
 
 function rotuloNota(nota) {
   const rotulos = { 1: 'Muito ruim', 2: 'Ruim', 3: 'Neutro', 4: 'Bom', 5: 'Muito bom' };
@@ -39,7 +34,6 @@ function limparErroCampo(id) {
   mostrarErroCampo(id, '');
 }
 
-/* ---------- usuários: preencher os <select> de avaliador/avaliado ---------- */
 
 async function carregarUsuarios() {
   const retorno = await fetch('php/usuario_get.php');
@@ -59,10 +53,8 @@ async function carregarUsuarios() {
   });
 }
 
-/* ---------- READ: listar todos ---------- */
-
 async function buscar() {
-  const retorno = await fetch('php/avaliacao_get.php');
+  const retorno = await fetch('php/avaliacoes/avaliacao_get.php');
   const resposta = await retorno.json();
 
   listaAvaliacoes = resposta.status == 'ok' ? resposta.data : [];
@@ -102,7 +94,6 @@ function popularSelects() {
   selecionarExcluir.innerHTML = placeholder + opcoesHTML;
 }
 
-/* ---------- CREATE ---------- */
 
 formCriar.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -131,7 +122,7 @@ async function novo() {
   fd.append('nota', document.getElementById('criarNota').value);
   fd.append('comentario', document.getElementById('criarComentario').value.trim());
 
-  const retorno = await fetch('php/avaliacao_novo.php', {
+  const retorno = await fetch('php/avaliacoes/avaliacao_novo.php', {
     method: 'POST',
     body: fd
   });
@@ -147,11 +138,8 @@ async function novo() {
   }
 }
 
-/* ---------- UPDATE (2 fases) ---------- */
-
-// FASE 1: buscar o registro pelo ID e preencher o formulário
 async function preencherFormEdicao(id) {
-  const retorno = await fetch('php/avaliacao_get.php?id=' + id);
+  const retorno = await fetch('php/avaliacoes/avaliacao_get.php?id=' + id);
   const resposta = await retorno.json();
 
   if (resposta.status == 'ok') {
@@ -170,7 +158,6 @@ selecionarEditar.addEventListener('change', () => {
   preencherFormEdicao(selecionarEditar.value);
 });
 
-// FASE 2: enviar os dados novos (ID na URL + dados no body)
 formEditar.addEventListener('submit', (e) => {
   e.preventDefault();
   alterar();
@@ -200,7 +187,7 @@ async function alterar() {
   fd.append('nota', document.getElementById('editarNota').value);
   fd.append('comentario', document.getElementById('editarComentario').value.trim());
 
-  const retorno = await fetch('php/avaliacao_alterar.php?id=' + id, {
+  const retorno = await fetch('php/avaliacoes/avaliacao_alterar.php?id=' + id, {
     method: 'POST',
     body: fd
   });
@@ -222,8 +209,6 @@ btnCancelarEdicao.addEventListener('click', () => {
   selecionarEditar.value = '';
   ativarAba('tabListar');
 });
-
-/* ---------- DELETE ---------- */
 
 function preencherResumoExclusao(id) {
   const avaliacao = listaAvaliacoes.find((av) => Number(av.id_avaliacao) === Number(id));
@@ -254,7 +239,7 @@ async function excluir() {
 
   if (!confirm(`Excluir a avaliação de ${avaliacao.avaliador} para ${avaliacao.avaliado}?`)) return;
 
-  const retorno = await fetch('php/avaliacao_excluir.php?id=' + idParaExcluir);
+  const retorno = await fetch('php/avaliacoes/avaliacao_excluir.php?id=' + idParaExcluir);
   const resposta = await retorno.json();
 
   alert(resposta.mensagem);
@@ -268,8 +253,6 @@ async function excluir() {
     ativarAba('tabListar');
   }
 }
-
-/* ---------- atalhos dos botões da tabela ---------- */
 
 document.getElementById('corpoTabela').addEventListener('click', (e) => {
   const linha = e.target.closest('tr[data-id]');
@@ -290,10 +273,8 @@ document.getElementById('corpoTabela').addEventListener('click', (e) => {
   }
 });
 
-/* ---------- início ---------- */
-
 document.addEventListener('DOMContentLoaded', async () => {
-  // valida_sessao(); // 
-  await carregarUsuarios();   // primeiro os usuários (selects), depois as avaliações
+
+  await carregarUsuarios();
   buscar();
 });

@@ -1,5 +1,5 @@
 <?php 
-include_once('conexao.php');
+include_once('../conexao.php');
 
 mysqli_report(MYSQLI_REPORT_OFF);  
 $conexao->set_charset('utf8mb4');  
