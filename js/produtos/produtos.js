@@ -155,7 +155,8 @@ async function editar(id){
         document.getElementById("categoria").value = registro.id_categoria_item;
         document.getElementById("usuario").value = registro.id_usuario_publicador;
         window.scrollTo(0, 0);
-    }else{
+    }
+    else {
         alert("ERRO: " + resposta.mensagem);
     }
 }
@@ -199,7 +200,7 @@ function limparFormulario(){
         document.getElementById(campos[i]).value = "";
     }
     var selects = ["estado", "tipo", "status", "visivel", "categoria", "usuario"];
-    for(var i=0;i<selects.length;i++){
+    for (var i=0;i<selects.length;i++){
         document.getElementById(selects[i]).selectedIndex = 0;
     }
 }
