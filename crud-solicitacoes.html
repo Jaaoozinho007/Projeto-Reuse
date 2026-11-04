@@ -122,14 +122,14 @@
   <div class="bg-surface border rounded-4 p-4 mb-4"
        style="border-color:var(--color-border) !important;">
 
-    <h2 class="h5 mb-4">
+    <h2 class="h5 mb-4" id="tituloFormulario">
       Nova solicitação
     </h2>
 
 
     <form id="formSolicitacao">
 
-
+      <input type="hidden" id="id" value="">
 
       <div class="mb-3">
 
@@ -143,27 +143,6 @@
             Selecione um item
           </option>
 
-          <option>Monitor LG 19"</option>
-          <option>Estante de madeira</option>
-          <option>Livros de cálculo (5un)</option>
-          <option>Jaqueta jeans M</option>
-          <option>Notebook Dell</option>
-          <option>Cadeira de escritório</option>
-          <option>Bicicleta aro 26</option>
-          <option>Celular Samsung</option>
-          <option>Mochila</option>
-          <option>Teclado</option>
-          <option>Mouse</option>
-          <option>Fone de ouvido</option>
-          <option>Calculadora</option>
-          <option>Impressora</option>
-          <option>Armário</option>
-          <option>Mesa de escritório</option>
-          <option>Livros</option>
-          <option>Material escolar</option>
-          <option>Roupas</option>
-          <option>Calçados</option>
-
         </select>
 
       </div>
@@ -172,15 +151,16 @@
       <div class="mb-3">
 
         <label class="form-label-eco">
-          Seu nome
+          Solicitante
         </label>
 
-        <input
-          id="nome"
-          type="text"
-          class="form-control form-control-eco"
-          placeholder="Ex: Rafael Furlan"
-        >
+        <select id="usuario" class="form-select form-select-eco">
+
+          <option value="" selected disabled>
+            Selecione o solicitante
+          </option>
+
+        </select>
 
       </div>
 
@@ -196,6 +176,7 @@
           id="mensagem"
           class="form-control form-control-eco"
           rows="3"
+          maxlength="300"
           placeholder="Olá! Tenho interesse no item, posso retirar amanhã à tarde."
         ></textarea>
 
@@ -246,14 +227,16 @@
       <div class="d-flex gap-2">
 
         <button
-          type="reset"
+          type="button"
+          id="limpar"
           class="btn-eco-outline flex-fill"
         >
           Limpar
         </button>
 
         <button
-          type="submit"
+          type="button"
+          id="enviar"
           class="btn-eco flex-fill"
         >
           Salvar solicitação
@@ -268,7 +251,7 @@
 </div>
 
 
-<script src="/js/solicitacoes.js"></script>
+<script src="js/solicitacoes/solicitacoes.js"></script>
 
 </body>
 </html>
