@@ -8,15 +8,16 @@
     ];
 
     // O ID vem pela URL ($_GET) e os dados novos pelo body ($_POST)
-    if(isset($_GET['id'])){
+    if (isset($_GET['id'])){
 
-        if(empty($_POST['nome']) || empty($_POST['data']) || empty($_POST['categoria']) || empty($_POST['usuario'])){
+        if (empty($_POST['nome']) || empty($_POST['data']) || empty($_POST['categoria']) || empty($_POST['usuario'])){
             $retorno = [
                 'status'    => 'nok',
                 'mensagem'  => 'Preencha nome, data, categoria e publicador.',
                 'data'      => []
             ];
-        }else{
+        }
+        else {
             $nome       = $_POST['nome'];
             $descricao  = $_POST['descricao'];
             $estado     = $_POST['estado'];
@@ -34,13 +35,14 @@
             $stmt->bind_param("ssssssissiii", $nome, $descricao, $estado, $tipo, $fotos, $local, $visivel, $status, $data, $usuario, $categoria, $_GET['id']);
             $stmt->execute();
 
-            if($stmt->affected_rows > 0){
+            if ($stmt->affected_rows > 0){
                 $retorno = [
                     'status'    => 'ok',
                     'mensagem'  => 'Registro alterado com sucesso.',
                     'data'      => []
                 ];
-            }else{
+            }
+            else {
                 $retorno = [
                     'status'    => 'nok',
                     'mensagem'  => 'Nenhum dado foi alterado.',
@@ -50,7 +52,8 @@
             $stmt->close();
         }
 
-    }else{
+    }
+    else {
         $retorno = [
             'status'    => 'nok',
             'mensagem'  => 'Não posso alterar um registro sem um ID informado.',
