@@ -7,19 +7,20 @@
         'data'      => []
     ];
 
-    if(isset($_GET['id'])){
+    if (isset($_GET['id'])){
         // RECEBENDO O ID por GET
         $stmt = $conexao->prepare("DELETE FROM item WHERE id_item = ?");
         $stmt->bind_param("i",$_GET['id']);
         $stmt->execute();
 
-        if($stmt->affected_rows > 0){
+        if ($stmt->affected_rows > 0){
             $retorno = [
                 'status'    => 'ok',
                 'mensagem'  => 'Registro excluido',
                 'data'      => []
             ];
-        }else{
+        }
+        else {
             $retorno = [
                 'status'    => 'nok',
                 'mensagem'  => 'Registro não excluido',
@@ -27,7 +28,8 @@
             ];
         }
         $stmt->close();
-    }else{
+    }
+    else {
         $retorno = [
             'status'    => 'nok',
             'mensagem'  => 'É necessário informar um ID para exclusão',
