@@ -1,3 +1,4 @@
+
 let listaAvaliacoes = [];
 let idParaExcluir = null;
 

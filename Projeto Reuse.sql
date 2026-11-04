@@ -166,16 +166,3 @@ INSERT INTO categoria (id_categoria, nome, icone) VALUES
 (3, 'Livros', NULL),
 (4, 'Roupas', NULL),
 (5, 'Transporte', NULL);
-
-INSERT INTO item (
-    id_item, nome, descricao, estado_conservacao, tipo_negociacao, fotos,
-    localizacao, localizacao_visivel, status_item, data_publicacao,
-    id_usuario_publicador, id_categoria_item
-) VALUES
-(1, 'Monitor LG 19"', 'Monitor funcionando perfeitamente.', 'Bom', 'Doação', 'monitor.jpg', 'Curitiba', true, 'Disponível', '2026-02-01', 1, 1),
-(2, 'Estante de madeira', 'Estante com 4 prateleiras.', 'Usado', 'Doação', 'estante.jpg', 'Colombo', true, 'Disponível', '2026-02-03', 3, 2),
-(3, 'Livros de cálculo (5un)', 'Cinco livros de cálculo para graduação.', 'Bom', 'Troca', 'livros.jpg', 'Curitiba', true, 'Disponível', '2026-02-05', 2, 3),
-(4, 'Jaqueta jeans M', 'Jaqueta jeans tamanho M.', 'Ótimo', 'Doação', 'jaqueta.jpg', 'Pinhais', true, 'Disponível', '2026-02-07', 4, 4),
-(5, 'Notebook Dell', 'Notebook com carregador.', 'Usado', 'Troca', 'notebook.jpg', 'Curitiba', false, 'Disponível', '2026-02-09', 5, 1),
-(6, 'Cadeira de escritório', 'Cadeira com regulagem de altura.', 'Bom', 'Doação', 'cadeira.jpg', 'Curitiba', true, 'Disponível', '2026-02-11', 1, 2),
-(7, 'Bicicleta aro 26', 'Bicicleta com 21 marchas.', 'Usado', 'Troca', 'bike.jpg', 'Colombo', true, 'Disponível', '2026-02-13', 3, 5);

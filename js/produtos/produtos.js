@@ -155,7 +155,8 @@ async function editar(id){
         document.getElementById("categoria").value = registro.id_categoria_item;
         document.getElementById("usuario").value = registro.id_usuario_publicador;
         window.scrollTo(0, 0);
-    }else{
+    }
+    else {
         alert("ERRO: " + resposta.mensagem);
     }
 }

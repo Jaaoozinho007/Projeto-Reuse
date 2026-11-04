@@ -1,4 +1,4 @@
-<?php // php/campanha_get.php  (todas ou por ?id=X)
+<?php 
 include_once('../conexao.php');
  
 $retorno = ['status' => '', 'mensagem' => '', 'data' => []];
