@@ -7,7 +7,7 @@
         'data'      => []
     ];
 
-    // Busca os usuários para preencher o select "publicador"
+  
     $stmt = $conexao->prepare("SELECT id_usuario, nome FROM usuario");
     $stmt->execute();
     $resultado = $stmt->get_result();

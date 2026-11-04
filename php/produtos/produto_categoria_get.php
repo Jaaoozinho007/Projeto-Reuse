@@ -7,7 +7,6 @@
         'data'      => []
     ];
 
-    // Busca as categorias para preencher o select do formulário
     $stmt = $conexao->prepare("SELECT id_categoria, nome FROM categoria");
     $stmt->execute();
     $resultado = $stmt->get_result();

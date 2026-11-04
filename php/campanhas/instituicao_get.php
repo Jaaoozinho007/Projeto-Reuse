@@ -1,4 +1,4 @@
-<?php // php/instituicao_get.php  (popula o select de ONG)
+<?php
 include_once('../conexao.php');
  
 $retorno = ['status' => '', 'mensagem' => '', 'data' => []];

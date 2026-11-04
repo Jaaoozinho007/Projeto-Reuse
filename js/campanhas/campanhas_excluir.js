@@ -5,7 +5,7 @@ const excluirTitulo    = document.getElementById('excluir-titulo');
 const excluirInfo      = document.getElementById('excluir-info');
 const excluirConfirmar = document.getElementById('excluir-confirmar');
  
-// Preenche o select com as campanhas existentes
+
 async function carregarCampanhasExcluir() {
     const registros = await buscarCampanhas();
     preencherSelectCampanhas(
@@ -15,7 +15,7 @@ async function carregarCampanhasExcluir() {
     );
 }
  
-// Ao selecionar, mostra os dados da campanha para confirmar
+
 excluirSelect.addEventListener('change', () => {
     buscarParaExcluir(excluirSelect.value);
 });

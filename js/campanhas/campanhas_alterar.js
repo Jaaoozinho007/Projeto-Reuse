@@ -7,7 +7,7 @@ async function carregarCampanhasEditar() {
     preencherSelectCampanhas(selectEditar, registros, 'Selecione...');
 }
  
-// FASE 1: ao selecionar, busca a campanha pelo ID e preenche o formulário
+
 selectEditar.addEventListener('change', () => {
     buscarParaEditar(selectEditar.value);
 });
@@ -33,7 +33,7 @@ async function buscarParaEditar(id) {
     document.getElementById('editar-meta').value      = c.meta ?? '';
 }
  
-// FASE 2: ao salvar, envia o ID na URL e os dados no body
+
 formEditar.addEventListener('submit', (event) => {
     event.preventDefault();
     alterar();

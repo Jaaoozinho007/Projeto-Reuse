@@ -14,7 +14,7 @@ async function buscarCampanhas() {
     return resposta.status == 'ok' ? resposta.data : [];
 }
  
-// Preenche um <select> com as campanhas (value = id_campanha)
+
 function preencherSelectCampanhas(sel, registros, textoInicial) {
     sel.innerHTML = `<option value="" selected disabled>${textoInicial}</option>`;
     registros.forEach(c => {
@@ -25,7 +25,7 @@ function preencherSelectCampanhas(sel, registros, textoInicial) {
     });
 }
  
-// Preenche os selects de ONG (Criar e Editar) com as instituições do banco
+
 async function carregarOngs() {
     const retorno = await fetch(API + 'instituicao_get.php');
     const resposta = await retorno.json();
@@ -40,7 +40,7 @@ async function carregarOngs() {
         if (resposta.status == 'ok') {
             resposta.data.forEach(i => {
                 const op = document.createElement('option');
-                op.value = i.id_instituicao;   // o value é o ID (FK)
+                op.value = i.id_instituicao;  
                 op.textContent = i.nome;
                 sel.appendChild(op);
             });
@@ -48,7 +48,7 @@ async function carregarOngs() {
     });
 }
  
-// Atualiza tabela + selects de Editar e Excluir (chamada após criar/editar/excluir)
+
 function atualizarTela() {
     listarCampanhas();
     carregarCampanhasEditar();

@@ -7,7 +7,7 @@
         'data'      => []
     ];
 
-    // O ID vem pela URL ($_GET) e os dados novos pelo body ($_POST)
+    
     if (isset($_GET['id'])){
 
         if (empty($_POST['nome']) || empty($_POST['data']) || empty($_POST['categoria']) || empty($_POST['usuario'])){
@@ -31,7 +31,7 @@
             $categoria  = (int) $_POST['categoria'];
 
             $stmt = $conexao->prepare("UPDATE item SET nome = ?, descricao = ?, estado_conservacao = ?, tipo_negociacao = ?, fotos = ?, localizacao = ?, localizacao_visivel = ?, status_item = ?, data_publicacao = ?, id_usuario_publicador = ?, id_categoria_item = ? WHERE id_item = ?");
-            // 6 strings + 1 inteiro + 2 strings + 3 inteiros (usuario, categoria e id)
+            
             $stmt->bind_param("ssssssissiii", $nome, $descricao, $estado, $tipo, $fotos, $local, $visivel, $status, $data, $usuario, $categoria, $_GET['id']);
             $stmt->execute();
 

@@ -9,8 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buscar();
 });
 
-// Botão Salvar: se o campo id está vazio é um item NOVO,
-// se tem id é uma ALTERAÇÃO
+
 document.getElementById("enviar").addEventListener("click", () => {
     var id = document.getElementById("id").value;
     if (id == "") {
@@ -25,8 +24,7 @@ document.getElementById("cancelar").addEventListener("click", () => {
     limparFormulario();
 });
 
-// ----------------------------------------------
-// Preenche os selects (categoria e publicador) com dados do BANCO
+
 async function carregarCategorias(){
     const retorno = await fetch(API + "produto_categoria_get.php");
     const resposta = await retorno.json();
@@ -51,8 +49,7 @@ async function carregarUsuarios(){
     document.getElementById("usuario").innerHTML = html;
 }
 
-// ----------------------------------------------
-// (R) READ - listar todos
+
 async function buscar(){
     const retorno = await fetch(API + "produto_get.php");
     const resposta = await retorno.json();
@@ -96,9 +93,7 @@ function preencherTabela(tabela){
     document.getElementById("lista").innerHTML = html;
 }
 
-// ----------------------------------------------
-// Monta o FormData com os campos do formulário
-// (os nomes aqui são os mesmos usados no $_POST do PHP)
+
 function pegarDados(){
     const fd = new FormData();
     fd.append("nome", document.getElementById("nome").value);
@@ -135,8 +130,7 @@ async function novo(){
     }
 }
 
-// ----------------------------------------------
-// (U) UPDATE - Fase 1: busca o registro pelo ID e preenche o formulário
+
 async function editar(id){
     const retorno = await fetch(API + "produto_get.php?id="+id);
     const resposta = await retorno.json();
@@ -161,7 +155,7 @@ async function editar(id){
     }
 }
 
-// (U) UPDATE - Fase 2: envia o ID na URL e os dados no body
+
 async function alterar(id){
     const fd = pegarDados();
     const retorno = await fetch(API + "produto_alterar.php?id="+id,
@@ -180,8 +174,7 @@ async function alterar(id){
     }
 }
 
-// ----------------------------------------------
-// (D) DELETE
+
 async function excluir(id){
     if (confirm("Tem certeza que deseja excluir este produto?")){
         const retorno = await fetch(API + "produto_excluir.php?id="+id);
@@ -193,7 +186,7 @@ async function excluir(id){
     }
 }
 
-// ----------------------------------------------
+
 function limparFormulario(){
     var campos = ["id", "nome", "descricao", "fotos", "localizacao", "data"];
     for (var i=0;i<campos.length;i++){

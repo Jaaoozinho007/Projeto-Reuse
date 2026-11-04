@@ -2,13 +2,13 @@
     include_once('../conexao.php');
 
     $retorno = [
-        'status'    => '', // ok - nok
-        'mensagem'  => '', // mensagem que envio para o front
+        'status'    => '', 
+        'mensagem'  => '',
         'data'      => []
     ];
 
     if (isset($_GET['id'])){
-        // RECEBENDO O ID por GET
+        
         $stmt = $conexao->prepare("DELETE FROM item WHERE id_item = ?");
         $stmt->bind_param("i",$_GET['id']);
         $stmt->execute();
