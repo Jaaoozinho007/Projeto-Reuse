@@ -13,9 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // se tem id é uma ALTERAÇÃO
 document.getElementById("enviar").addEventListener("click", () => {
     var id = document.getElementById("id").value;
-    if(id == ""){
+    if (id == "") {
         novo();
-    }else{
+    }
+    else {
         alterar(id);
     }
 });
@@ -30,8 +31,8 @@ async function carregarCategorias(){
     const retorno = await fetch(API + "produto_categoria_get.php");
     const resposta = await retorno.json();
     var html = "";
-    if(resposta.status == "ok"){
-        for(var i=0;i<resposta.data.length;i++){
+    if (resposta.status == "ok"){
+        for (var i=0;i<resposta.data.length;i++){
             html += `<option value="${resposta.data[i].id_categoria}">${resposta.data[i].nome}</option>`;
         }
     }
@@ -42,8 +43,8 @@ async function carregarUsuarios(){
     const retorno = await fetch(API + "produto_usuario_get.php");
     const resposta = await retorno.json();
     var html = "";
-    if(resposta.status == "ok"){
-        for(var i=0;i<resposta.data.length;i++){
+    if (resposta.status == "ok"){
+        for (var i=0;i<resposta.data.length;i++){
             html += `<option value="${resposta.data[i].id_usuario}">${resposta.data[i].nome}</option>`;
         }
     }
@@ -55,9 +56,10 @@ async function carregarUsuarios(){
 async function buscar(){
     const retorno = await fetch(API + "produto_get.php");
     const resposta = await retorno.json();
-    if(resposta.status == "ok"){
+    if (resposta.status == "ok"){
         preencherTabela(resposta.data);
-    }else{
+    }
+    else {
         document.getElementById("lista").innerHTML = "Nenhum produto cadastrado.";
     }
 }
@@ -74,7 +76,7 @@ function preencherTabela(tabela){
                 <th> Data </th>
                 <th> # </th>
             </tr>`;
-    for(var i=0;i<tabela.length;i++){
+    for (var i=0;i<tabela.length;i++){
         html += `
             <tr>
                 <td>${tabela[i].nome}</td>
@@ -123,11 +125,12 @@ async function novo(){
           body: fd
         });
     const resposta = await retorno.json();
-    if(resposta.status == "ok"){
+    if (resposta.status == "ok"){
         alert("SUCESSO: " + resposta.mensagem);
         limparFormulario();
         buscar();
-    }else{
+    }
+    else {
         alert("ERRO: " + resposta.mensagem);
     }
 }
@@ -137,7 +140,7 @@ async function novo(){
 async function editar(id){
     const retorno = await fetch(API + "produto_get.php?id="+id);
     const resposta = await retorno.json();
-    if(resposta.status == "ok"){
+    if (resposta.status == "ok"){
         var registro = resposta.data[0];
         document.getElementById("id").value = registro.id_item;
         document.getElementById("nome").value = registro.nome;
@@ -166,11 +169,12 @@ async function alterar(id){
           body: fd
         });
     const resposta = await retorno.json();
-    if(resposta.status == "ok"){
+    if (resposta.status == "ok"){
         alert("SUCESSO: " + resposta.mensagem);
         limparFormulario();
         buscar();
-    }else{
+    }
+    else {
         alert("ERRO: " + resposta.mensagem);
     }
 }
@@ -178,11 +182,11 @@ async function alterar(id){
 // ----------------------------------------------
 // (D) DELETE
 async function excluir(id){
-    if(confirm("Tem certeza que deseja excluir este produto?")){
+    if (confirm("Tem certeza que deseja excluir este produto?")){
         const retorno = await fetch(API + "produto_excluir.php?id="+id);
         const resposta = await retorno.json();
         alert(resposta.mensagem);
-        if(resposta.status == "ok"){
+        if (resposta.status == "ok"){
             buscar();
         }
     }
@@ -191,7 +195,7 @@ async function excluir(id){
 // ----------------------------------------------
 function limparFormulario(){
     var campos = ["id", "nome", "descricao", "fotos", "localizacao", "data"];
-    for(var i=0;i<campos.length;i++){
+    for (var i=0;i<campos.length;i++){
         document.getElementById(campos[i]).value = "";
     }
     var selects = ["estado", "tipo", "status", "visivel", "categoria", "usuario"];
