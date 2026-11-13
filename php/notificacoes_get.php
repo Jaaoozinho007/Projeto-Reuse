@@ -1,0 +1,2 @@
+<?php
+require __DIR__.'/base.php';$id=autenticado();$db=banco();$stmt=$db->prepare('SELECT id_notificacao,tipo_notificacao,conteudo_notificacao,status_leitura,COALESCE(data_hora,data_notificacao) data_hora FROM notificacao WHERE id_usuario_notificado=? ORDER BY id_notificacao DESC LIMIT 100');$stmt->bind_param('i',$id);$stmt->execute();$rows=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);$stmt->close();responder('ok','Notificações.',$rows);

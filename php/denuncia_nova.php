@@ -1,0 +1,8 @@
+<?php
+require __DIR__.'/base.php';$id=autenticado();exigir_post();
+$tipo=trim($_POST['tipo']??'');$alvo=(int)($_POST['alvo']??0);$motivo=trim($_POST['motivo']??'');$desc=trim($_POST['descricao']??'');
+if(!in_array($tipo,['item','usuario'],true)||$alvo<1||!$motivo||mb_strlen($motivo)>50||mb_strlen($desc)>500)responder('nok','Selecione o motivo da denúncia e um alvo válido.');
+$db=banco();$col=$tipo==='item'?'id_item':'id_usuario';$tabela=$tipo==='item'?'item':'usuario';$stmt=$db->prepare("SELECT $col FROM $tabela WHERE $col=?");$stmt->bind_param('i',$alvo);$stmt->execute();$existe=$stmt->get_result()->num_rows;$stmt->close();if(!$existe)responder('nok','Anúncio ou usuário não encontrado.');
+$arquivo=null;if(!empty($_FILES['evidencia']['name'])){$f=$_FILES['evidencia'];if($f['error']!==UPLOAD_ERR_OK||$f['size']>2*1024*1024)responder('nok','Evidência deve ter até 2 MB.');$mime=(new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']);$ext=['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp','application/pdf'=>'pdf'][$mime]??null;if(!$ext)responder('nok','Envie JPG, PNG, WebP ou PDF.');$arquivo='uploads/'.bin2hex(random_bytes(16)).'.'.$ext;if(!move_uploaded_file($f['tmp_name'],__DIR__.'/../'.$arquivo))responder('nok','Falha ao anexar evidência.');}
+$item=$tipo==='item'?$alvo:null;$usuario=$tipo==='usuario'?$alvo:null;$status='Pendente';
+$stmt=$db->prepare('INSERT INTO denuncia(tipo_alvo,status_denuncia,motivo_denuncia,data_denuncia,id_usuario_registrante,descricao_denuncia,evidencia,id_item_alvo,id_usuario_alvo) VALUES (?,?,?,CURDATE(),?,?,?,?,?)');$stmt->bind_param('sssissii',$tipo,$status,$motivo,$id,$desc,$arquivo,$item,$usuario);$stmt->execute();$stmt->close();responder('ok','Denúncia registrada para análise.');

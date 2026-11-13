@@ -1,0 +1,18 @@
+<?php
+require __DIR__.'/base.php';$id=autenticado();exigir_post();$sol=(int)($_POST['id_solicitacao']??0);$acao=$_POST['acao']??'';
+if($sol<1||!in_array($acao,['aprovar','reprovar','excluir','concluir'],true))responder('nok','Ação inválida.');
+$db=banco();$db->begin_transaction();
+try{
+$stmt=$db->prepare('SELECT s.status_soli,s.id_usuario_solicitante,i.id_item,i.nome,i.status_item FROM solicitacao s JOIN solicitacao_item si ON si.id_solicitacao=s.id_solicitacao JOIN item i ON i.id_item=si.id_item WHERE s.id_solicitacao=? AND i.id_usuario_publicador=? FOR UPDATE');$stmt->bind_param('ii',$sol,$id);$stmt->execute();$r=$stmt->get_result()->fetch_assoc();$stmt->close();
+if(!$r)throw new Exception('Solicitação não encontrada nos seus anúncios.');
+if($acao==='aprovar'&&($r['status_soli']!=='Pendente'||$r['status_item']!=='Disponível'))throw new Exception('Este produto já foi reservado ou a solicitação foi decidida.');
+if(in_array($acao,['reprovar','excluir'],true)&&$r['status_soli']!=='Pendente')throw new Exception('Somente solicitações pendentes podem ser reprovadas ou excluídas.');
+if($acao==='concluir'&&($r['status_soli']!=='Aprovada'||$r['status_item']!=='Reservado'))throw new Exception('Apenas uma solicitação aprovada pode ser concluída.');
+$novo=['aprovar'=>'Aprovada','reprovar'=>'Reprovada','excluir'=>'Excluída','concluir'=>'Concluída'][$acao];$stmt=$db->prepare('UPDATE solicitacao SET status_soli=? WHERE id_solicitacao=?');$stmt->bind_param('si',$novo,$sol);$stmt->execute();$stmt->close();
+if($acao==='aprovar'){$status='Reservado';$stmt=$db->prepare('UPDATE item SET status_item=? WHERE id_item=?');$stmt->bind_param('si',$status,$r['id_item']);$stmt->execute();$stmt->close();
+$reprovado='Reprovada';$pendente='Pendente';$stmt=$db->prepare('UPDATE solicitacao s JOIN solicitacao_item si ON si.id_solicitacao=s.id_solicitacao SET s.status_soli=? WHERE si.id_item=? AND s.id_solicitacao<>? AND s.status_soli=?');$stmt->bind_param('siis',$reprovado,$r['id_item'],$sol,$pendente);$stmt->execute();$stmt->close();
+$stmt=$db->prepare('SELECT DISTINCT s.id_usuario_solicitante FROM solicitacao s JOIN solicitacao_item si ON si.id_solicitacao=s.id_solicitacao WHERE si.id_item=? AND s.id_solicitacao<>? AND s.status_soli=?');$stmt->bind_param('iis',$r['id_item'],$sol,$reprovado);$stmt->execute();$outros=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);$stmt->close();foreach($outros as $outro){$msg=mb_substr('Uma solicitação para '.$r['nome'].' foi reprovada porque o produto foi reservado.',0,150);$tipo='Solicitação';$lido=0;$stmt=$db->prepare('INSERT INTO notificacao(status_leitura,tipo_notificacao,conteudo_notificacao,data_notificacao,id_usuario_notificado,data_hora) VALUES (?,?,?,CURDATE(),?,NOW())');$stmt->bind_param('issi',$lido,$tipo,$msg,$outro['id_usuario_solicitante']);$stmt->execute();$stmt->close();}}
+if($acao==='concluir'){$status='Concluído';$stmt=$db->prepare('UPDATE item SET status_item=? WHERE id_item=?');$stmt->bind_param('si',$status,$r['id_item']);$stmt->execute();$stmt->close();}
+if($acao!=='excluir'){$tipo='Solicitação';$lido=0;$msg=mb_substr('Sua solicitação do produto '.$r['nome'].' foi '.$novo.'.',0,150);$stmt=$db->prepare('INSERT INTO notificacao(status_leitura,tipo_notificacao,conteudo_notificacao,data_notificacao,id_usuario_notificado,data_hora) VALUES (?,?,?,CURDATE(),?,NOW())');$stmt->bind_param('issi',$lido,$tipo,$msg,$r['id_usuario_solicitante']);$stmt->execute();$stmt->close();}
+$db->commit();responder('ok','Solicitação '.$novo.'.');
+}catch(Throwable $e){$db->rollback();responder('nok',$e instanceof Exception?$e->getMessage():'Falha ao atualizar solicitação.');}
