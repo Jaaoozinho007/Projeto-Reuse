@@ -1,0 +1,95 @@
+.text-button {
+    border: 0;
+    background: transparent;
+    color: var(--green);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.text-button:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+}
+
+.login-wrap:has(#register-form:not([hidden])) {
+    align-items: start;
+}
+
+.login-wrap:has(#register-form:not([hidden])) .login-copy {
+    padding-top: 60px;
+}
+
+.received-title {
+    margin-top: 2.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.received-title p {
+    color: var(--muted, #64748b);
+    margin: 0.4rem 0 0;
+}
+
+.received-row {
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.received-row p {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .received-row {
+        flex-direction: column;
+    }
+
+    .received-row .pill {
+        align-self: flex-start;
+    }
+}
+
+#chat-mensagens {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 16px 0;
+}
+
+.request-row .actions {
+    flex-wrap: wrap;
+}
+
+.tab .form-panel {
+    margin-bottom: 18px;
+}
+
+#perfil-publico {
+    margin-top: 18px;
+}
+
+nav {
+    flex-wrap: wrap;
+}
+
+nav .nav {
+    font-size: 0.84rem;
+}
+
+@media (max-width: 760px) {
+    nav {
+        display: flex;
+        gap: 3px;
+        overflow-x: auto;
+    }
+
+    .top {
+        flex-wrap: wrap;
+    }
+
+    .request-row {
+        flex-wrap: wrap;
+    }
+}
