@@ -1,150 +1,712 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReUse - Produtos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
-  <link rel="stylesheet" href="style.css">
-
-  <link rel="icon" href="./icone.png">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-eco d-none d-lg-block">
-  <div class="container">
-
-    <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none">
-      <span class="brand-mark">
-        <i class="bi bi-arrow-repeat"></i>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   ReUse • Compartilhe o que transforma
+  </title>
+  <link href="app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <header class="top">
+   <a class="logo" href="index.html">
+    <span class="mark">
+     ↻
+    </span>
+    ReUse
+   </a>
+   <nav hidden="" id="menu">
+    <button class="nav active" data-tab="explorar">
+     Explorar
+    </button>
+    <button class="nav" data-tab="anunciar">
+     Anunciar
+    </button>
+    <button class="nav" data-tab="solicitacoes">
+     Solicitações
+    </button>
+    <button class="nav" data-tab="avaliar">
+     Avaliar
+    </button>
+    <button class="nav" data-tab="perfil">
+     Perfil
+    </button>
+    <button class="nav" data-tab="chat">
+     Chat
+    </button>
+    <button class="nav" data-tab="notificacoes">
+     Notificações
+    </button>
+    <button class="nav" data-tab="denuncias">
+     Denunciar
+    </button>
+    <button class="nav" data-tab="avaliar-pessoas">
+     Avaliar pessoas
+    </button>
+    <button class="nav" data-tab="metricas">
+     Medições
+    </button>
+   </nav>
+   <div hidden="" id="userbar">
+    <span id="username">
+    </span>
+    <button class="outline small" id="logout">
+     Sair
+    </button>
+   </div>
+  </header>
+  <main>
+   <section class="login-wrap" id="login-view">
+    <div class="login-copy">
+     <div class="eyebrow">
+      CONSUMO CONSCIENTE • IMPACTO REAL
+     </div>
+     <h1>
+      Um novo começo para o que você não usa mais.
+     </h1>
+     <p>
+      Doe, encontre e dê uma nova história a objetos que ainda têm muito a oferecer.
+     </p>
+     <div class="impact">
+      <span>
+       ♻ Menos desperdício
       </span>
-
-      <span class="brand-name">ReUse</span>
-    </a>
-
-    <ul class="navbar-nav flex-row gap-1">
-
-      <li class="nav-item">
-        <a class="nav-link nav-link-eco active" href="index.html">
-          <i class="bi bi-box-seam me-1"></i>Itens
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link nav-link-eco" href="crud-solicitacoes.html">
-          <i class="bi bi-hand-thumbs-up me-1"></i>Solicitações
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link nav-link-eco" href="crud-avaliacoes.html">
-          <i class="bi bi-star me-1"></i>Avaliações
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link nav-link-eco" href="crud-campanhas.html">
-          <i class="bi bi-megaphone me-1"></i>Campanhas
-        </a>
-      </li>
-
-    </ul>
-  </div>
-</nav>
-    <div class="container my-4">
-
-        <h1 class="h3">Produtos</h1>
-        <p>Cadastrar, consultar, alterar e excluir os itens de doação ou troca.</p>
-        <hr>
-
-        <!-- LISTA (o Javascript preenche aqui) -->
-        <div id="lista"></div>
-
-        <!-- FORMULÁRIO (serve para cadastrar e para alterar) -->
-        <br></br>
-        <br></br>
-        <br></br>
-
-
-        <h1 class="h3">Cadastro de Produtos</h1>
-        <hr>
-        <input type="hidden" id="id">
-
-        <div class="row g-3 mb-3">
-            <div class="col-md-6">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" id="nome" class="form-control">
-            </div>
-            <div class="col-md-6">
-                <label for="descricao" class="form-label">Descrição</label>
-                <input type="text" id="descricao" class="form-control">
-            </div>
-            <div class="col-md-4">
-                <label for="estado" class="form-label">Estado de conservação</label>
-                <select id="estado" class="form-select">
-                    <option>Novo</option>
-                    <option>Seminovo</option>
-                    <option>Usado</option>
-                    <option>Desgastado</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="tipo" class="form-label">Tipo de negociação</label>
-                <select id="tipo" class="form-select">
-                    <option>Doação</option>
-                    <option>Troca</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="status" class="form-label">Status</label>
-                <select id="status" class="form-select">
-                    <option>Disponível</option>
-                    <option>Reservado</option>
-                    <option>Concluído</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="localizacao" class="form-label">Localização</label>
-                <input type="text" id="localizacao" class="form-control">
-            </div>
-            <div class="col-md-4">
-                <label for="visivel" class="form-label">Localização visível?</label>
-                <select id="visivel" class="form-select">
-                    <option value="1">Sim</option>
-                    <option value="0">Não</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="data" class="form-label">Data de publicação</label>
-                <input type="date" id="data" class="form-control">
-            </div>
-            <div class="col-md-4">
-                <label for="categoria" class="form-label">Categoria</label>
-                <select id="categoria" class="form-select"></select>
-            </div>
-            <div class="col-md-4">
-                <label for="usuario" class="form-label">Publicador</label>
-                <select id="usuario" class="form-select"></select>
-            </div>
-            <div class="col-md-4">
-                <label for="fotos" class="form-label">Foto (link)</label>
-                <input type="text" id="fotos" class="form-control">
-            </div>
-        </div>
-
-        <button id="enviar" class="btn btn-primary">Salvar</button>
-        <button id="cancelar" class="btn btn-outline-secondary">Limpar</button>
-        <hr>
-
-        
-
+      <span>
+       ♡ Mais conexões
+      </span>
+     </div>
     </div>
-
-    <script src="js/produtos/produtos.js"></script>
-</body>
+    <form class="panel login-panel" id="login-form">
+     <div class="eyebrow">
+      BEM-VINDO DE VOLTA
+     </div>
+     <h2>
+      Entre na sua conta
+     </h2>
+     <p>
+      Acesse suas doações e solicitações.
+     </p>
+     <label>
+      E-mail
+      <input autocomplete="username" maxlength="50" name="email" placeholder="voce@email.com" required="" type="email"/>
+     </label>
+     <label>
+      Senha
+      <input autocomplete="current-password" name="senha" placeholder="Sua senha" required="" type="password"/>
+     </label>
+     <button class="primary" type="submit">
+      Entrar na plataforma
+      <span>
+       →
+      </span>
+     </button>
+     <p class="hint">
+      Ainda não tem uma conta?
+      <button class="text-button" id="show-register" type="button">
+       Cadastre-se gratuitamente
+      </button>
+     </p>
+    </form>
+    <form class="panel login-panel" hidden="" id="register-form">
+     <div class="eyebrow">
+      FAÇA PARTE DO REUSE
+     </div>
+     <h2>
+      Crie sua conta
+     </h2>
+     <p>
+      Cadastre-se para anunciar, solicitar e avaliar produtos.
+     </p>
+     <label>
+      Nome completo
+      <input autocomplete="name" maxlength="50" minlength="2" name="nome" required=""/>
+     </label>
+     <label>
+      E-mail
+      <input autocomplete="email" maxlength="50" name="email" required="" type="email"/>
+     </label>
+     <label>
+      Telefone (opcional)
+      <input autocomplete="tel" maxlength="20" name="telefone" type="tel"/>
+     </label>
+     <label>
+      Cidade ou localização (opcional)
+      <input autocomplete="address-level2" maxlength="30" name="localizacao"/>
+     </label>
+     <label>
+      Senha
+      <input autocomplete="new-password" maxlength="72" minlength="8" name="senha" placeholder="Mínimo de 8 caracteres" required="" type="password"/>
+     </label>
+     <label>
+      Confirmar senha
+      <input autocomplete="new-password" maxlength="72" minlength="8" name="confirmar_senha" required="" type="password"/>
+     </label>
+     <button class="primary" type="submit">
+      Criar minha conta →
+     </button>
+     <p class="hint">
+      Já possui cadastro?
+      <button class="text-button" id="show-login" type="button">
+       Voltar ao login
+      </button>
+     </p>
+    </form>
+   </section>
+   <div hidden="" id="app-view">
+    <section class="hero">
+     <div>
+      <div class="eyebrow">
+       A COMUNIDADE REUSE
+      </div>
+      <h1>
+       Compartilhar faz bem.
+       <br/>
+       <em>
+        Reutilizar transforma.
+       </em>
+      </h1>
+      <p>
+       Encontre produtos disponíveis ou anuncie algo que pode ganhar uma nova vida.
+      </p>
+      <button class="primary fit" data-go="anunciar">
+       + Anunciar produto
+      </button>
+     </div>
+     <div aria-hidden="true" class="hero-art">
+      <span>
+       ↻
+      </span>
+      <div>
+       O futuro é circular.
+      </div>
+     </div>
+    </section>
+    <section class="tab" id="explorar">
+     <div class="section-title">
+      <div>
+       <div class="eyebrow">
+        DESCUBRA E REUTILIZE
+       </div>
+       <h2>
+        Produtos disponíveis
+       </h2>
+      </div>
+      <span class="pill" id="count">
+       0 itens
+      </span>
+     </div>
+     <div class="filters">
+      <input aria-label="Buscar produtos" id="busca" placeholder="Buscar por nome, descrição ou categoria..."/>
+      <select id="filtro-categoria">
+       <option value="">
+        Todas as categorias
+       </option>
+      </select>
+      <select id="filtro-estado">
+       <option value="">
+        Todos os estados
+       </option>
+       <option>
+        Novo
+       </option>
+       <option>
+        Seminovo
+       </option>
+       <option>
+        Usado
+       </option>
+       <option>
+        Desgastado
+       </option>
+      </select>
+     </div>
+     <div class="cards" id="produtos">
+     </div>
+    </section>
+    <section class="tab" hidden="" id="anunciar">
+     <div class="section-title">
+      <div>
+       <div class="eyebrow">
+        DÊ UMA NOVA CHANCE
+       </div>
+       <h2>
+        Anunciar produto
+       </h2>
+      </div>
+     </div>
+     <form class="panel form-panel" enctype="multipart/form-data" id="produto-form">
+      <div class="form-grid">
+       <label>
+        Nome do produto *
+        <input maxlength="50" name="nome" placeholder="Ex.: Mesa de escritório"/>
+       </label>
+       <label>
+        Categoria *
+        <select id="categoria-anuncio" name="categoria">
+         <option value="">
+          Selecione uma categoria
+         </option>
+        </select>
+       </label>
+       <label class="full">
+        Descrição *
+        <textarea maxlength="300" name="descricao" placeholder="Descreva o produto e suas condições" rows="4"></textarea>
+       </label>
+       <label>
+        Estado de conservação *
+        <select name="estado">
+         <option value="">
+          Selecione
+         </option>
+         <option>
+          Novo
+         </option>
+         <option>
+          Seminovo
+         </option>
+         <option>
+          Usado
+         </option>
+         <option>
+          Desgastado
+         </option>
+        </select>
+       </label>
+       <label>
+        Tipo de negociação
+        <select name="tipo">
+         <option>
+          Doação
+         </option>
+         <option>
+          Troca
+         </option>
+        </select>
+       </label>
+       <label>
+        Localização *
+        <input maxlength="30" name="localizacao" placeholder="Ex.: Curitiba"/>
+       </label>
+       <label>
+        Exibir localização?
+        <select name="visivel">
+         <option value="1">
+          Sim
+         </option>
+         <option value="0">
+          Não
+         </option>
+        </select>
+       </label>
+       <label class="full">
+        Foto (JPG, PNG ou WebP, até 2 MB)
+        <input accept="image/jpeg,image/png,image/webp" name="foto" type="file"/>
+       </label>
+      </div>
+      <div class="actions">
+       <button class="primary" data-draft="0" type="submit">
+        Publicar anúncio
+       </button>
+       <button class="outline" data-draft="1" formnovalidate="" type="submit">
+        Salvar rascunho
+       </button>
+      </div>
+      <p class="hint">
+       * Campos obrigatórios para publicar. Rascunhos podem ser completados posteriormente.
+      </p>
+     </form>
+    </section>
+    <section class="tab" hidden="" id="solicitacoes">
+     <div class="section-title">
+      <div>
+       <div class="eyebrow">
+        ACOMPANHE SEUS PEDIDOS
+       </div>
+       <h2>
+        Minhas solicitações
+       </h2>
+      </div>
+     </div>
+     <div class="stack" id="minhas-solicitacoes">
+     </div>
+     <div class="section-title received-title">
+      <div>
+       <div class="eyebrow">
+        PEDIDOS PARA SEUS ANÚNCIOS
+       </div>
+       <h2>
+        Solicitações recebidas
+       </h2>
+       <p>
+        Veja quem solicitou os produtos que você anunciou.
+       </p>
+      </div>
+      <button class="outline small" id="atualizar-recebidas" type="button">
+       Atualizar
+      </button>
+     </div>
+     <div aria-live="polite" class="stack" id="solicitacoes-recebidas">
+     </div>
+    </section>
+    <section class="tab" hidden="" id="avaliar">
+     <div class="section-title">
+      <div>
+       <div class="eyebrow">
+        SUA EXPERIÊNCIA IMPORTA
+       </div>
+       <h2>
+        Avaliar produto recebido
+       </h2>
+      </div>
+     </div>
+     <form class="panel form-panel" id="avaliacao-form">
+      <label>
+       Doação concluída
+       <select id="avaliaveis" name="id_solicitacao" required="">
+       </select>
+      </label>
+      <label>
+       Nota (1 a 5)
+       <select name="nota" required="">
+        <option value="">
+         Selecione uma nota
+        </option>
+        <option value="1">
+         ★ 1
+        </option>
+        <option value="2">
+         ★★ 2
+        </option>
+        <option value="3">
+         ★★★ 3
+        </option>
+        <option value="4">
+         ★★★★ 4
+        </option>
+        <option value="5">
+         ★★★★★ 5
+        </option>
+       </select>
+      </label>
+      <label>
+       Comentário opcional
+       <textarea maxlength="300" name="comentario" placeholder="Conte como foi sua experiência" rows="4"></textarea>
+      </label>
+      <button class="primary fit" type="submit">
+       Enviar avaliação
+      </button>
+     </form>
+     <div class="empty" hidden="" id="avaliar-vazio">
+      Não há doações concluídas para avaliar.
+     </div>
+    </section>
+    <section class="tab" hidden="" id="perfil">
+     <div class="section-title">
+      <h2>
+       Meu perfil
+      </h2>
+     </div>
+     <form class="panel form-panel" id="perfil-form">
+      <label>
+       Nome
+       <input maxlength="50" name="nome" required=""/>
+      </label>
+      <label>
+       E-mail
+       <input maxlength="50" name="email" required="" type="email"/>
+      </label>
+      <label>
+       Telefone
+       <input maxlength="20" name="telefone"/>
+      </label>
+      <label>
+       Cidade
+       <input maxlength="30" name="localizacao"/>
+      </label>
+      <button class="primary fit">
+       Salvar perfil
+      </button>
+     </form>
+     <form class="panel form-panel" id="senha-form">
+      <h3>
+       Alterar senha
+      </h3>
+      <label>
+       Senha atual
+       <input name="atual" required="" type="password"/>
+      </label>
+      <label>
+       Nova senha
+       <input maxlength="72" minlength="8" name="nova" required="" type="password"/>
+      </label>
+      <button class="outline fit">
+       Alterar senha
+      </button>
+     </form>
+     <div class="panel form-panel" id="perfil-publico">
+     </div>
+    </section>
+    <section class="tab" hidden="" id="chat">
+     <div class="section-title">
+      <h2>
+       Minhas conversas
+      </h2>
+     </div>
+     <div class="panel form-panel">
+      <label>
+       Conversa
+       <select id="chat-conversas">
+       </select>
+      </label>
+      <button class="outline fit" id="chat-atualizar" type="button">
+       Atualizar conversa
+      </button>
+      <div aria-live="polite" class="stack" id="chat-mensagens">
+      </div>
+      <form id="chat-form">
+       <label>
+        Mensagem
+        <textarea maxlength="300" name="conteudo" required=""></textarea>
+       </label>
+       <button class="primary fit">
+        Enviar mensagem
+       </button>
+      </form>
+     </div>
+    </section>
+    <section class="tab" hidden="" id="notificacoes">
+     <div class="section-title">
+      <h2>
+       Notificações
+      </h2>
+     </div>
+     <div class="stack" id="notificacoes-lista">
+     </div>
+    </section>
+    <section class="tab" hidden="" id="denuncias">
+     <div class="section-title">
+      <h2>
+       Realizar denúncia
+      </h2>
+     </div>
+     <form class="panel form-panel" enctype="multipart/form-data" id="denuncia-form">
+      <label>
+       Denunciar
+       <select name="tipo" required="">
+        <option value="item">
+         Anúncio
+        </option>
+        <option value="usuario">
+         Usuário
+        </option>
+       </select>
+      </label>
+      <label>
+       ID do anúncio ou usuário
+       <input min="1" name="alvo" required="" type="number"/>
+      </label>
+      <label>
+       Motivo
+       <select name="motivo" required="">
+        <option value="">
+         Selecione o motivo
+        </option>
+        <option>
+         Conteúdo inadequado
+        </option>
+        <option>
+         Fraude
+        </option>
+        <option>
+         Produto proibido
+        </option>
+        <option>
+         Assédio
+        </option>
+        <option>
+         Outro
+        </option>
+       </select>
+      </label>
+      <label>
+       Descrição
+       <textarea maxlength="500" name="descricao"></textarea>
+      </label>
+      <label>
+       Evidência (JPG, PNG, WebP, PDF, até 2 MB)
+       <input accept="image/jpeg,image/png,image/webp,application/pdf" name="evidencia" type="file"/>
+      </label>
+      <button class="primary fit">
+       Enviar denúncia
+      </button>
+     </form>
+    </section>
+    <section class="tab" hidden="" id="avaliar-pessoas">
+     <div class="section-title">
+      <h2>
+       Avaliar doador ou recebedor
+      </h2>
+     </div>
+     <form class="panel form-panel" id="pessoa-avaliacao-form">
+      <label>
+       Doação concluída
+       <select id="pessoas-avaliaveis" name="id_solicitacao" required="">
+       </select>
+      </label>
+      <label>
+       Nota
+       <select name="nota" required="">
+        <option value="">
+         Selecione
+        </option>
+        <option value="1">
+         1 ★
+        </option>
+        <option value="2">
+         2 ★
+        </option>
+        <option value="3">
+         3 ★
+        </option>
+        <option value="4">
+         4 ★
+        </option>
+        <option value="5">
+         5 ★
+        </option>
+       </select>
+      </label>
+      <label>
+       Comentário
+       <textarea maxlength="300" name="comentario"></textarea>
+      </label>
+      <button class="primary fit">
+       Enviar avaliação
+      </button>
+     </form>
+    </section>
+    <section class="tab" hidden="" id="metricas">
+     <div class="section-title">
+      <div>
+       <div class="eyebrow">
+        QUALIDADE EM NÚMEROS
+       </div>
+       <h2>
+        Medições e testes
+       </h2>
+      </div>
+     </div>
+     <div class="metric-grid">
+      <div class="panel metric">
+       <small>
+        Última requisição API
+       </small>
+       <strong id="api-ms">
+        —
+       </strong>
+       <span>
+        milissegundos
+       </span>
+      </div>
+      <div class="panel metric">
+       <small>
+        Maior tempo API
+       </small>
+       <strong id="max-ms">
+        —
+       </strong>
+       <span>
+        milissegundos
+       </span>
+      </div>
+      <div class="panel metric">
+       <small>
+        Requisições medidas
+       </small>
+       <strong id="req-count">
+        0
+       </strong>
+       <span>
+        nesta sessão de página
+       </span>
+      </div>
+      <div class="panel metric">
+       <small>
+        Tempo de carregamento
+       </small>
+       <strong id="load-ms">
+        —
+       </strong>
+       <span>
+        milissegundos
+       </span>
+      </div>
+     </div>
+     <div class="panel form-panel">
+      <h3>
+       Histórico das últimas requisições
+      </h3>
+      <div class="table-scroll">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Endpoint
+          </th>
+          <th>
+           Duração (ms)
+          </th>
+          <th>
+           HTTP
+          </th>
+          <th>
+           Horário
+          </th>
+         </tr>
+        </thead>
+        <tbody id="metric-rows">
+        </tbody>
+       </table>
+      </div>
+      <button class="outline" id="export-metrics" type="button">
+       Exportar medições CSV
+      </button>
+      <p class="hint">
+       As medições incluem rede, processamento e resposta do navegador. O servidor e o banco precisam estar ativos. Teste com dados reais e repetições.
+      </p>
+     </div>
+    </section>
+   </div>
+  </main>
+  <dialog id="request-dialog">
+   <form class="modal-form" id="solicitar-form">
+    <h2>
+     Solicitar produto
+    </h2>
+    <p id="request-name">
+    </p>
+    <input id="request-item" name="id_item" type="hidden"/>
+    <label>
+     Mensagem ao doador
+     <textarea maxlength="300" name="mensagem" placeholder="Olá! Tenho interesse neste produto..." rows="4"></textarea>
+    </label>
+    <div class="actions">
+     <button class="primary" type="submit">
+      Enviar solicitação
+     </button>
+     <button class="outline" id="close-dialog" type="button">
+      Cancelar
+     </button>
+    </div>
+   </form>
+  </dialog>
+  <div aria-live="polite" id="toast" role="status">
+  </div>
+  <footer>
+   ReUse © 2026 • Reutilizar é transformar
+  </footer>
+  <script defer="" src="app.js">
+  </script>
+ </body>
 </html>
